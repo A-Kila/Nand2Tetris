@@ -1,0 +1,18 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/Adder8.hdl
+
+/**
+ * Adds two 8-bit values.
+ * The most significant carry bit is ignored.
+ */
+
+CHIP Add8 {
+    IN a[8], b[8], c;
+    OUT out[8], carry;
+
+    PARTS:
+    Add4(a=a[0..3], b=b[0..3], c=c, out=out[0..3], carry=carry0);
+    Add4(a=a[4..7], b=b[4..7], c=carry0, out=out[4..7], carry=carry);
+}

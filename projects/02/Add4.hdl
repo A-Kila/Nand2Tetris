@@ -1,0 +1,18 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/Adder4.hdl
+
+/**
+ * Adds two 4-bit values.
+ * The most significant carry bit is ignored.
+ */
+
+CHIP Add4 {
+    IN a[4], b[4], c;
+    OUT out[4], carry;
+
+    PARTS:
+    Add2(a=a[0..1], b=b[0..1], c=c, out=out[0..1], carry=carry0);
+    Add2(a=a[2..3], b=b[2..3], c=carry0, out=out[2..3], carry=carry);
+}
