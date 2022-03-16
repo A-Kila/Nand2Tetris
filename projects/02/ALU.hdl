@@ -59,14 +59,12 @@ CHIP ALU {
     Mux16(a=outAnd, b=outAdd, sel=f, out=outAddAnd);
     // if (no == 1) set out = !out
     Not16(in=outAddAnd, out=nOutAddAnd);
-    Mux16(a=outAddAnd, b=nOutAddAnd, sel=no, out=nO);
-    
-    // TODO
-
-    And16(a=nO, b=true, out=out);
-    // // if (out == 0) set zr = 1
-    // Or16Way(in=nO, out=outOr);
-    // Mux(a=true, b=false, sel=outOr, out=zr);
-    // // if (out < 0) set ng = 1
-    // Mux(a=false, b=true, sel=nOut[15], out=ng);
+    Mux16(a=outAddAnd, b=nOutAddAnd, sel=no, out[0..14]=outAbsolute, out[15]=outNegativeIndex);
+    // if (out == 0) set zr = 1
+    Or16Way(in[0..14]=outAbsolute, in[15]=outNegativeIndex, out=outOr);
+    Mux(a=true, b=false, sel=outOr, out=zr);
+    // if (out < 0) set ng = 1
+    Mux(a=false, b=true, sel=outNegativeIndex, out=ng);
+    // concat outAbsolute and outNegative in out
+    And16(a[0..14]=outAbsolute, a[15]=outNegativeIndex, b=true, out=out);
 }
