@@ -11,15 +11,30 @@
 // "white" in every pixel;
 // the screen should remain fully clear as long as no key is pressed.
 
-// Put your code here.
+// while (true):
+//     Read keyboard input
+//     if input == 0: 
+//         color = white
+//         PAINT_SCREEN()
+//     else: 
+//         color = black
+//         PAINT_SCREEN()
+//
+// void PAINT_SCREEN:
+//     pixel = starting pixel pointer
+//     while (pixel != keyboard input pointer):
+//         *pixel = color
+//         pixel++
 
 (MAIN_LOOP)
     // Read keyboard input
     @KBD
     D = M
+
     // if input == 0: color = white
     @WHITE
     D; JEQ
+
     // else color = black
     @BLACK
     0; JMP
@@ -28,6 +43,7 @@
     // color = white
     @color
     M = 0
+
     // Call paint screen function
     @PAINT_SCREEN
     0; JMP
@@ -36,6 +52,7 @@
     // color = black
     @color
     M = -1
+
     // Call paint screen function
     @PAINT_SCREEN
     0; JMP
@@ -46,7 +63,8 @@
     D = A
     @pixel
     M = D
-    // call PAINT_PIXEL_LOOP function
+
+    // call PAINT_PIXEL_LOOP
     @PAINT_PIXEL_LOOP
     0; JMP
 
@@ -61,10 +79,9 @@
     @MAIN_LOOP
     D; JEQ
 
-    // D = color
+    // *pixel = color
     @color
     D = M
-    // *pixel = D (color)
     @pixel
     A = M
     M = D
