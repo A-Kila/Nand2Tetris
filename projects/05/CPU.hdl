@@ -26,7 +26,6 @@
  */
 
 CHIP CPU {
-
     IN  inM[16],         // M value input  (M = contents of RAM[A])
         instruction[16], // Instruction for execution
         reset;           // Signals whether to re-start the current
@@ -39,5 +38,36 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+    // get instruction and which registrer to load data in
+    Or(a=instruction[15], b=false, out=cInstruction);
+    And(a=instruction[4], b=cInstruction, out=loadD);
+    Not(in=instruction[15], out=aInstruction);
+    Or(a=instruction[5], b=aInstruction, out=loadA);
+    
+    // get input, output A registrer
+    Mux16(a=instruction, b=aluOut, sel=cInstruction, out=instructionOut);
+    ARegister(in=instructionOut, load=loadA, out=AOut, out[0..14]=addressM);
+
+    // get ALU x and y input
+    Mux16(a=AOut, b=inM, sel=instruction[12], out=AMOut);
+    DRegister(in=aluOut, load=loadD, out=DOut);
+
+    ALU(x=DOut, y=AMOut, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], 
+        f=instruction[7], no=instruction[6], out=aluOut, out=outM, zr=zr, ng=ng);
+
+    // output writeM if necessary
+    And(a=instruction[3], b=cInstruction, out=writeM);
+
+    // jump if needed
+    And(a=instruction[2], b=ng, out=lessOut);
+    And(a=instruction[1], b=zr, out=eqOut);
+    Or(a=lessOut, b=eqOut, out=lessEqOut);
+    Or(a=zr, b=ng, out=zrOrNg);
+    Not(in=zrOrNg, out=ps);
+    And(a=instruction[0], b=ps, out=grtOut);
+    Or(a=lessEqOut, b=grtOut, out=probJmp);
+    And(a=probJmp, b=instruction[15], out=jmp);
+    Not(in=jmp, out=notJmp);
+
+    PC(in=AOut, load=jmp, inc=notJmp, reset=reset, out[0..14]=pc);
 }
