@@ -9,7 +9,7 @@ install: ## Install requirements
 
 format: ## Run code formatters
 	isort n2t tests
-	black n2t app
+	black n2t tests
 
 lint: ## Run code linters
 	isort --check n2t tests
