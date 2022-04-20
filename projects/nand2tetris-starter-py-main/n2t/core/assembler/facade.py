@@ -38,6 +38,7 @@ class ACommand(Command):
         else:
             address = symbol_table[address_string]
 
+        # convert int to binary, remove 0b prefix, add 0's at the start
         instruction: str = bin(address)[2:].rjust(16, "0")
         return instruction
 
