@@ -11,9 +11,13 @@ from typing import Iterable
 class FileFormat(Enum):
     hack = ".hack"
     asm = ".asm"
+    vm = ".vm"
 
     def validate(self, path: Path) -> None:
         assert path.suffix == self.value
+
+    def is_format(self, path: Path) -> bool:
+        return path.suffix == self.value
 
     def convert(self, path: Path) -> Path:
         return path.with_suffix(self.value)
