@@ -47,20 +47,68 @@ class EmptyCommand(Command):
         return super().parse(line)
 
 
-class PushCommand(Command):
+class SegmentCommand(Command):
+    __segment_asm_names = {
+        "local": "LCL",
+        "argument": "ARG",
+        "this": "THIS",
+        "that": "THAT",
+        "temp": "R5",
+    }
+
+    @property
+    @abstractmethod
+    def command_string(self) -> str:
+        pass
+
+    @property
+    def segment_asm_names(self) -> dict[str, str]:
+        return self.__segment_asm_names
+
     def parse(self, line: str) -> Iterable[str]:
         line = line.strip()
         line_tokenized = line.split()
-        assert line_tokenized[0] == "push"
+
+        assert line_tokenized[0] == self.command_string
+        segment = line_tokenized[1]
+        value = line_tokenized[2]
 
         asm = list(super().parse(line))
 
-        if line_tokenized[1] == "constant":
-            asm.extend(self.__constant(line_tokenized[2]))
+        if segment == "constant":
+            asm.extend(self.constant(value))
+
+        elif segment == "pointer" or segment == "static":
+            asm.extend(self.pointer(value, segment == "static"))
+
+        else:
+            asm.extend(self.storage(segment, value))
 
         return asm
 
-    def __constant(self, value: str) -> list[str]:
+    @abstractmethod
+    def constant(self, value: str) -> list[str]:
+        pass
+
+    @abstractmethod
+    def storage(self, segment: str, value: str) -> list[str]:
+        """
+        This method generates assembly code for local, argument,
+        this, that and temp segments
+        """
+        pass
+
+    @abstractmethod
+    def in_place(self, value: str, is_static: bool) -> list[str]:
+        pass
+
+
+class PushCommand(SegmentCommand):
+    @property
+    def command_string(self) -> str:
+        return "push"
+
+    def constant(self, value: str) -> list[str]:
         asm = []
         asm.append(f"@{value}")  # D = value
         asm.append("D=A")
@@ -71,27 +119,82 @@ class PushCommand(Command):
         asm.append("M=M+1")
         return asm
 
-    def __storage(self) -> list[str]:
-        """
-        This method generates assembly code for local, argument,
-        this and that segments
-        """
-        pass
+    def storage(self, segment: str, value: str) -> list[str]:
+        asm_segment = self.segment_asm_names[segment]
+        segment_pointer_storage = "A" if segment == "temp" else "M"
 
-    def __compiler_helper(self) -> list[str]:
-        """
-        This method generates assembly code for pointer and temp
-        segments
-        """
-        pass
+        asm = []
+        asm.append(f"@{value}")  # D = value
+        asm.append("D=A")
+        asm.append(f"@{asm_segment}")  # addr = segment_pointer + D
+        asm.append(f"A={segment_pointer_storage}+D")
+        asm.append("D=M")  # D = *addr
+        asm.append("@SP")  # *SP = D
+        asm.append("A=M")
+        asm.append("M=D")
+        asm.append("@SP")  # SP++
+        asm.append("M=M+1")
+        return asm
 
-    def __static(self) -> list[str]:
-        pass
+    def pointer(self, value: str, is_static: bool) -> list[str]:
+        if is_static:
+            address = f"static.{value}"
+        else:
+            address = "THIS" if value == "0" else "THAT"
+
+        asm = []
+        asm.append(f"@{address}") # D = THIS/THAT
+        asm.append("D=M")
+        asm.append("@SP") # *SP = D
+        asm.append("A=M")
+        asm.append("M=D")
+        asm.append("@SP") # SP++
+        asm.append("M=M+1") 
+        return asm
 
 
-class PopCommand(Command):
-    def parse(self, line: str) -> Iterable[str]:
-        pass
+class PopCommand(SegmentCommand):
+    @property
+    def command_string(self) -> str:
+        return "pop"
+
+    def constant(self, value: str) -> list[str]:
+        assert False
+
+    def storage(self, segment: str, value: str) -> list[str]:
+        asm_segment = self.segment_asm_names[segment]
+        segment_pointer_storage = "A" if segment == "temp" else "M"
+
+        asm = []
+        asm.append(f"@{value}")  # D = value
+        asm.append("D=A")
+        asm.append(f"@{asm_segment}")  # D = addr = segmentPoint + D
+        asm.append(f"D={segment_pointer_storage}+D")
+        asm.append("@R13")  # R13 = D
+        asm.append("M=D")
+        asm.append("@SP")  # SP--
+        asm.append("M=M-1")
+        asm.append("A=M")  # D = *SP
+        asm.append("D=M")
+        asm.append("@R13")  # *addr = D
+        asm.append("A=M")
+        asm.append("M=D")
+        return asm
+
+    def pointer(self, value: str, is_static: bool) -> list[str]:
+        if is_static:
+            address = f"static.{value}"
+        else:
+            address = "THIS" if value == "0" else "THAT"
+
+        asm = []
+        asm.append("@SP") # SP--
+        asm.append("M=M-1")
+        asm.append("A=M") # D = *SP
+        asm.append("D=M")
+        asm.append(f"@{address}") # THIS/THAT = D
+        asm.append("M=D")
+        return asm
 
 
 class ArithmeticCommand(Command):
