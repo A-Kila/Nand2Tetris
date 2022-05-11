@@ -280,9 +280,7 @@ class LabelCommand(Command):
 
         vm_label = line.split()[1]
         asm_label = (
-            f"{self.file_name}."
-            + (self.function_name + "$" if self.function_name else "")
-            + f"{vm_label}"
+            f"{self.file_name}." + (self.function_name + '$' if self.function_name else '') + f"{vm_label}"
         )
 
         asm.append(f"({asm_label})")
