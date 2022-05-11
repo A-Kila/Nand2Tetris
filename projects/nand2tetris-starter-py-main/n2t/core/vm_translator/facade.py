@@ -9,30 +9,33 @@ class VmTranslator:
     def create(cls) -> VmTranslator:
         return cls()
 
-    def translate(self, vm_code: Iterable[str]) -> Iterable[str]:
+    def translate(self, file_name: str, vm_code: Iterable[str]) -> Iterable[str]:
         asm: list[str] = []
 
         for line in vm_code:
-            asm.extend(Command.get_command(line).parse(line))
+            asm.extend(Command.get_command(file_name, line).parse(line))
 
         return asm
 
 
 class Command:
     @staticmethod
-    def get_command(line: str) -> Command:
+    def get_command(file_name: str, line: str) -> Command:
         line = line.lstrip()
 
         if len(line) == 0 or line[0:2] == "//":
-            return EmptyCommand()
+            return EmptyCommand(file_name)
 
         if line[0:4] == "push":
-            return PushCommand()
+            return PushCommand(file_name)
 
         if line[0:3] == "pop":
-            return PopCommand()
+            return PopCommand(file_name)
 
-        return ArithmeticCommand()
+        return ArithmeticCommand(file_name)
+
+    def __init__(self, file_name: str) -> None:
+        self.file_name = file_name
 
     @abstractmethod
     def parse(self, line: str) -> Iterable[str]:
@@ -138,18 +141,18 @@ class PushCommand(SegmentCommand):
 
     def pointer(self, value: str, is_static: bool) -> list[str]:
         if is_static:
-            address = f"static.{value}"
+            address = f"{self.file_name}.{value}"
         else:
             address = "THIS" if value == "0" else "THAT"
 
         asm = []
-        asm.append(f"@{address}") # D = THIS/THAT
+        asm.append(f"@{address}")  # D = THIS/THAT
         asm.append("D=M")
-        asm.append("@SP") # *SP = D
+        asm.append("@SP")  # *SP = D
         asm.append("A=M")
         asm.append("M=D")
-        asm.append("@SP") # SP++
-        asm.append("M=M+1") 
+        asm.append("@SP")  # SP++
+        asm.append("M=M+1")
         return asm
 
 
@@ -183,16 +186,16 @@ class PopCommand(SegmentCommand):
 
     def pointer(self, value: str, is_static: bool) -> list[str]:
         if is_static:
-            address = f"static.{value}"
+            address = f"{self.file_name}.{value}"
         else:
             address = "THIS" if value == "0" else "THAT"
 
         asm = []
-        asm.append("@SP") # SP--
+        asm.append("@SP")  # SP--
         asm.append("M=M-1")
-        asm.append("A=M") # D = *SP
+        asm.append("A=M")  # D = *SP
         asm.append("D=M")
-        asm.append(f"@{address}") # THIS/THAT = D
+        asm.append(f"@{address}")  # THIS/THAT = D
         asm.append("M=D")
         return asm
 
@@ -264,4 +267,23 @@ class ArithmeticCommand(Command):
         asm.append(f"(END_COMPARE_{ArithmeticCommand.__label_count})")
 
         ArithmeticCommand.__label_count += 1
+        return asm
+
+
+class LabelCommand(Command):
+    def __init__(self, file_name: str, function_name: str | None = None) -> None:
+        super().__init__(file_name)
+        self.function_name = function_name
+
+    def parse(self, line: str) -> Iterable[str]:
+        asm = list(super().parse(line))
+
+        vm_label = line.split()[1]
+        asm_label = (
+            f"{self.file_name}."
+            + (self.function_name + "$" if self.function_name else "")
+            + f"{vm_label}"
+        )
+
+        asm.append(f"({asm_label})")
         return asm

@@ -14,7 +14,7 @@ class VmTranslator(Protocol):
 
 
 @dataclass
-class VmProgram:  # TODO: your work for Projects 8 starts here
+class VmProgram:
     base_path: Path
     file_paths: list[Path] = field(default_factory=list)
     vm_translator: VmTranslator = field(default_factory=DefaultVmTranslator.create)
@@ -36,7 +36,9 @@ class VmProgram:  # TODO: your work for Projects 8 starts here
         for file_path in self.file_paths:
             assembly_file = File(FileFormat.asm.convert(file_path))
             assembly_file.save(
-                self.vm_translator.translate(self.__iter_file(file_path))
+                self.vm_translator.translate(
+                    file_path.stem, self.__iter_file(file_path)
+                )
             )
 
     def __iter_file(self, file_path: Path) -> Iterator[str]:
