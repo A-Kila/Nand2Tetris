@@ -99,7 +99,7 @@ class SegmentCommand(Command):
         pass
 
     @abstractmethod
-    def in_place(self, value: str, is_static: bool) -> list[str]:
+    def pointer(self, value: str, is_static: bool) -> list[str]:
         pass
 
 
@@ -143,13 +143,13 @@ class PushCommand(SegmentCommand):
             address = "THIS" if value == "0" else "THAT"
 
         asm = []
-        asm.append(f"@{address}") # D = THIS/THAT
+        asm.append(f"@{address}")  # D = THIS/THAT
         asm.append("D=M")
-        asm.append("@SP") # *SP = D
+        asm.append("@SP")  # *SP = D
         asm.append("A=M")
         asm.append("M=D")
-        asm.append("@SP") # SP++
-        asm.append("M=M+1") 
+        asm.append("@SP")  # SP++
+        asm.append("M=M+1")
         return asm
 
 
@@ -188,11 +188,11 @@ class PopCommand(SegmentCommand):
             address = "THIS" if value == "0" else "THAT"
 
         asm = []
-        asm.append("@SP") # SP--
+        asm.append("@SP")  # SP--
         asm.append("M=M-1")
-        asm.append("A=M") # D = *SP
+        asm.append("A=M")  # D = *SP
         asm.append("D=M")
-        asm.append(f"@{address}") # THIS/THAT = D
+        asm.append(f"@{address}")  # THIS/THAT = D
         asm.append("M=D")
         return asm
 
