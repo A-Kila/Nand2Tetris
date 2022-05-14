@@ -20,7 +20,7 @@ class VmTranslator:
 
 class Command:
     @staticmethod
-    def get_command(file_name: str, line: str) -> Command:
+    def get_command(file_name: str, line: str, function_name: str | None = None) -> Command:
         line = line.lstrip()
 
         if len(line) == 0 or line[0:2] == "//":
@@ -31,6 +31,15 @@ class Command:
 
         if line[0:3] == "pop":
             return PopCommand(file_name)
+
+        if line[0:5] == "label":
+            return LabelCommand(file_name, function_name)
+
+        if line[0:4] == "goto":
+            return GotoCommand(file_name, function_name)
+
+        if line[0:7] == "if-goto":
+            return IfGotoCommand(file_name, function_name)
 
         return ArithmeticCommand(file_name)
 
@@ -271,7 +280,7 @@ class ArithmeticCommand(Command):
 
 
 class LabelCommand(Command):
-    def __init__(self, file_name: str, function_name: str | None = None) -> None:
+    def __init__(self, file_name: str, function_name: str | None) -> None:
         super().__init__(file_name)
         self.function_name = function_name
 
@@ -279,9 +288,47 @@ class LabelCommand(Command):
         asm = list(super().parse(line))
 
         vm_label = line.split()[1]
-        asm_label = (
-            f"{self.file_name}." + (self.function_name + '$' if self.function_name else '') + f"{vm_label}"
-        )
+        asm_label = LabelCommand.get_asm_label(vm_label, self.file_name, self.function_name)
 
         asm.append(f"({asm_label})")
+        return asm
+
+    @staticmethod
+    def get_asm_label(label: str, file_name: str, function_name: str | None) -> str:
+        return f"{file_name}." + (function_name + '$' if function_name else '') + f"{label}"
+
+
+class GotoCommand(Command):
+    def __init__(self, file_name: str, function_name: str | None) -> None:
+        super().__init__(file_name)
+        self.function_name = function_name
+
+    def parse(self, line: str) -> Iterable[str]:
+        asm = list(super().parse(line))
+        
+        vm_label = line.split()[1]
+        asm_label = LabelCommand.get_asm_label(vm_label, self.file_name, self.function_name)
+
+        asm.append(f"@{asm_label}") # jump to LABEL
+        asm.append("0; JMP")
+
+        return asm
+
+class IfGotoCommand(Command):
+    def __init__(self, file_name: str, function_name: str | None) -> None:
+        super().__init__(file_name)
+        self.function_name = function_name
+
+    def parse(self, line: str) -> Iterable[str]:
+        asm = list(super().parse(line))
+
+        vm_label = line.split()[1]
+        asm_label = LabelCommand.get_asm_label(vm_label, self.file_name, self.function_name)
+
+        asm.append("@SP") # D = *(--SP)
+        asm.append("AM=M-1")
+        asm.append("D=M")
+        asm.append(f"@{asm_label}") # if D + 1 == 0:  goto Label
+        asm.append("D;JNE")
+
         return asm
