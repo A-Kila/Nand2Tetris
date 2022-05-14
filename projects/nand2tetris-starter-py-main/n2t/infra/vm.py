@@ -9,7 +9,7 @@ from n2t.infra.io import File, FileFormat
 
 
 class VmTranslator(Protocol):
-    def translate(self, vm_code: Iterable[str]) -> Iterable[str]:
+    def translate(self, file_name: str, vm_code: Iterable[str]) -> Iterable[str]:
         pass
 
 
