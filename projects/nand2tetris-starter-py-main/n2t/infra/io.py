@@ -36,6 +36,15 @@ class File:
             for line in lines:
                 file.write(f"{line}\n")
 
+    def append(self, lines: Iterable[str]) -> None:
+        with self.path.open("a", newline="") as file:
+            for line in lines:
+                file.write(f"{line}\n")
+
+    def clear(self) -> File:
+        self.path.open("w", newline="").close()
+        return self
+
 
 def remove_files(pattern: str) -> None:
     for file in glob.glob(pattern):

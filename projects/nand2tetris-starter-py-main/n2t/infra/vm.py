@@ -12,6 +12,9 @@ class VmTranslator(Protocol):
     def translate(self, file_name: str, vm_code: Iterable[str]) -> Iterable[str]:
         pass
 
+    def bootstrap(self) -> Iterable[str]:
+        pass
+
 
 @dataclass
 class VmProgram:
@@ -33,7 +36,20 @@ class VmProgram:
                 self.file_paths.append(self.base_path)
 
     def translate(self) -> None:
-        for file_path in self.file_paths:
+        if self.base_path.suffix == "":
+            out_file_path = self.base_path / self.base_path.stem
+            assembly_file = File(FileFormat.asm.convert(out_file_path))
+            assembly_file.clear().append(self.vm_translator.bootstrap())
+
+            for in_file_path in self.file_paths:
+                assembly_file.append(
+                    self.vm_translator.translate(
+                        in_file_path.stem, self.__iter_file(in_file_path)
+                    )
+                )
+
+        else:
+            file_path = self.file_paths[0]
             assembly_file = File(FileFormat.asm.convert(file_path))
             assembly_file.save(
                 self.vm_translator.translate(
