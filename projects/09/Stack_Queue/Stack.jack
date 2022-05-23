@@ -1,0 +1,66 @@
+class Stack {
+
+    field int allocSize;
+    field int dataSize;
+    field Array data;
+
+    constructor Stack new() {
+        let dataSize = 0;
+        let allocSize = 2;
+        let data = Array.new(allocSize);
+
+        return this;
+    }
+
+    method void push(int element) {
+        let dataSize = dataSize + 1;
+        
+        if (dataSize > allocSize) {
+            do increaseSize();
+        }
+
+        let data[dataSize - 1] = element;
+
+        return;
+    }
+
+    method int pop() {
+        var int returnValue;
+
+        if (dataSize = 0) {
+            do Sys.error(500);
+        }
+        
+        let dataSize = dataSize - 1;
+        let returnValue = data[dataSize];
+
+        return returnValue;
+    }
+
+    method void dispose() {
+        do data.dispose();
+
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void increaseSize() {
+        var Array temp;
+        var int i;
+
+        let allocSize = allocSize * 2;
+        let temp = Array.new(allocSize);
+
+        let i = 0;
+        while (i < dataSize) {
+            let temp[i] = data[i];
+            let i = i + 1;
+        }
+
+        do data.dispose();
+        let data = temp;
+
+        return;
+    }
+
+}

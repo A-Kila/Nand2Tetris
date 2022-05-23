@@ -1,0 +1,88 @@
+class Queue {
+
+    field int allocSize;
+    field int dataSize;
+    field int frontIndex;
+    field int backIndex;
+    field Array data;
+
+    constructor Queue new() {
+        let allocSize = 2;
+        let dataSize = 0;
+        let frontIndex = 0;
+        let backIndex = -1; // index will be 0 after first element
+        let data = Array.new(allocSize);
+
+        return this;
+    }
+
+    method void enqueue(int element) {
+        let dataSize = dataSize + 1;
+        
+        if (dataSize > allocSize) {
+            do increaseSize();
+        }
+
+        let backIndex = backIndex + 1;
+        if (backIndex = allocSize) {
+            let backIndex = 0;
+        }
+
+        let data[backIndex] = element;
+
+        return;
+    }
+
+    method int dequeue() {
+        var int returnValue;
+
+        if (dataSize = 0) {
+            do Sys.error(500);
+        }
+
+        let dataSize = dataSize - 1;
+        let returnValue = data[frontIndex];
+        
+        let frontIndex = frontIndex + 1;
+        if (frontIndex = allocSize) {
+            let frontIndex = 0;
+        }
+
+        return returnValue;
+    }  
+
+    method void dispose() {
+        if (~(data = null)) {
+            do data.dispose();
+        }
+        
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void increaseSize() {
+        var Array temp;
+        var int iData, iTemp;
+
+        let allocSize = allocSize * 2;
+        let temp = Array.new(allocSize);
+
+        // iterate from frontIndex to backIndex and write data to temp from 0 to datasize - 1
+        let iData = frontIndex;
+        let iTemp = 0;
+        while (~(iData = (backIndex + 1))) {
+            if (iData = dataSize) {
+                let iData = 0;
+            }
+
+            let temp[iTemp] = data[iData];
+            let iData = iData + 1;
+            let iTemp = iTemp + 1;
+        }
+
+        do data.dispose();
+        let data = temp;
+
+        return;
+    }
+}

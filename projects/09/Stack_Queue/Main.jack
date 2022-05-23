@@ -1,0 +1,67 @@
+class Main {
+    function void main() {
+        do Main.testStack();
+        do Main.testQueue();
+
+        return;
+    }
+
+    function void testStack() {
+        var Stack stack;
+        let stack = Stack.new();
+
+        do stack.push(1);
+        do stack.push(2);
+        do stack.push(3);
+        do stack.push(4);
+        do stack.push(5);
+
+        do Main.assert(stack.pop() = 5, "pop 1 success");
+        do Main.assert(stack.pop() = 4, "pop 2 success");
+        do Main.assert(stack.pop() = 3, "pop 3 success");
+        do Main.assert(stack.pop() = 2, "pop 4 success");
+        do Main.assert(stack.pop() = 1, "pop 5 success");
+
+        do Output.printString("Stack Success!");
+        do Output.println();
+
+        return;
+    }
+
+    function void testQueue() {
+        var Queue queue;
+        let queue = Queue.new();
+
+        do queue.enqueue(1);
+        do queue.enqueue(2);
+        do queue.enqueue(3);
+        do queue.enqueue(4);
+
+        do Main.assert(queue.dequeue() = 1, "dequeue 1 success");
+        do Main.assert(queue.dequeue() = 2, "dequeue 2 success");
+
+        do queue.enqueue(1);
+        do queue.enqueue(2);
+        
+        do Main.assert(queue.dequeue() = 3, "dequeue 3 success");
+        do Main.assert(queue.dequeue() = 4, "dequeue 4 success");
+        do Main.assert(queue.dequeue() = 1, "dequeue 5 success");
+        do Main.assert(queue.dequeue() = 2, "dequeue 6 success");
+
+        do Output.printString("Queue Success!");
+        do Output.println();
+        
+        return;
+    }
+
+    function void assert(boolean expr, String successMessage) {
+        if (expr) {
+            do Output.printString(successMessage);
+            do Output.println();
+        } else {
+            do Sys.error(500);
+        }
+
+        return;
+    }
+}
