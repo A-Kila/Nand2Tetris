@@ -12,6 +12,8 @@ class FileFormat(Enum):
     hack = ".hack"
     asm = ".asm"
     vm = ".vm"
+    jack = ".jack"
+    xml = ".xml"
 
     def validate(self, path: Path) -> None:
         assert path.suffix == self.value
@@ -34,7 +36,7 @@ class File:
     def save(self, lines: Iterable[str]) -> None:
         with self.path.open("w", newline="") as file:
             for line in lines:
-                file.write(f"{line}\n")
+                file.write(f"{line}\r\n")
 
     def append(self, lines: Iterable[str]) -> None:
         with self.path.open("a", newline="") as file:

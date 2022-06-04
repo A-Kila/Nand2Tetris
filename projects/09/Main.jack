@@ -1,0 +1,16 @@
+class Main {
+    method void main() {
+        var int a;
+        let a = 2;
+
+        do res(a);
+
+        return;
+    }
+
+    method void res(int x) {
+        do Output.printInt(x);
+
+        return;
+    }
+}
