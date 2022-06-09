@@ -18,7 +18,10 @@ class JackTokenizer:
         self.program: Iterable[str] | None = None
 
     def load_program(self, program: Iterable[str]) -> JackTokenizer:
-        self.__init__()
+        self.index = 0
+        self.tokens = None
+        self.program = None
+
         self.program = program
         return self
 

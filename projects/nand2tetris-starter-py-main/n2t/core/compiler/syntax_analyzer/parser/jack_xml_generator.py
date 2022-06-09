@@ -374,7 +374,9 @@ class JackXmlCompiler:
         xml.extend(self.__add_tabs(self.compile_term()))
 
         while self.tokenizer.get_token().value.get_value() in self.binary_operations:
-            xml.append(self.__compile_symbol(self.tokenizer.get_token().value.get_value()))
+            xml.append(
+                self.__compile_symbol(self.tokenizer.get_token().value.get_value())
+            )
             self.__tokenizer_advance()
 
             xml.extend(self.__add_tabs(self.compile_term()))
