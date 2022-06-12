@@ -4,9 +4,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable, Iterator, Protocol
 
-from n2t.core.compiler.syntax_analyzer.parser.parser_facade import jackXmlParser
-from n2t.core.compiler.syntax_analyzer.tokenizer.token import Token
-from n2t.core.compiler.syntax_analyzer.tokenizer.tokenizer_facade import (
+from n2t.core.compiler.parser.parser_facade import JackCompiler
+from n2t.core.compiler.tokenizer.token import Token
+from n2t.core.compiler.tokenizer.tokenizer_facade import (
     JackTokenizer as DefaultJackTokenizer,
     JackTokenizerXmlPrinter,
 )
@@ -38,23 +38,23 @@ class JackTokenizerPrinter(Protocol):
         pass
 
 
-class JackParser(Protocol):
+class JackCompilationEngine(Protocol):
     def get_file_format(self) -> FileFormat:
         pass
 
-    def parse(self, tokenizer: JackTokenizer) -> Iterable[str]:
+    def compile(self, tokenizer: JackTokenizer) -> Iterable[str]:
         pass
 
 
 @dataclass
-class JackProgram:  # TODO: your work for Project 11 starts here
+class JackProgram:
     base_path: Path
     file_paths: list[Path] = field(default_factory=list)
     tokenizer: JackTokenizer = field(default_factory=DefaultJackTokenizer.create)
     tokenizer_printer: JackTokenizerPrinter = field(
         default_factory=JackTokenizerXmlPrinter
     )
-    parser: JackParser = field(default_factory=jackXmlParser)
+    compiler: JackCompilationEngine = field(default_factory=JackCompiler)
 
     @classmethod
     def load_from(cls, file_or_directory_name: str) -> JackProgram:
@@ -71,7 +71,7 @@ class JackProgram:  # TODO: your work for Project 11 starts here
 
     def compile(self) -> None:
         for file_path in self.file_paths:
-            self.__tokenizer_out(file_path)
+            # self.__tokenizer_out(file_path)
             self.__parser_out(file_path)
 
     def __tokenizer_out(self, file_path: Path) -> None:
@@ -85,9 +85,11 @@ class JackProgram:  # TODO: your work for Project 11 starts here
         )
 
     def __parser_out(self, file_path: Path) -> None:
-        xml_file = File(self.parser.get_file_format().convert(file_path))
+        xml_file = File(self.compiler.get_file_format().convert(file_path))
         xml_file.save(
-            self.parser.parse(self.tokenizer.load_program(self.__iter_file(file_path)))
+            self.compiler.compile(
+                self.tokenizer.load_program(self.__iter_file(file_path))
+            )
         )
 
     def __iter_file(self, file_path: Path) -> Iterator[str]:

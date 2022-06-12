@@ -26,6 +26,8 @@ SYMBOLS = {
     "~",
 }
 
+COMMENT_SYMBOLS = {"*", "/"}
+
 
 class TokenValue(Protocol):
     def get_value(self) -> str:
@@ -33,27 +35,27 @@ class TokenValue(Protocol):
 
 
 class KeywordToken(Enum):
-    class_token = "CLASS"
-    method_token = "METHOD"
-    function_token = "FUNCTION"
-    constructor_token = "CONSTRUCTOR"
-    int_token = "INT"
-    bool_token = "BOOLEAN"
-    char_token = "CHAR"
-    void_token = "VOID"
-    var_token = "VAR"
-    static_token = "STATIC"
-    field_token = "FIELD"
-    let_token = "LET"
-    do_token = "DO"
-    if_token = "IF"
-    else_token = "ELSE"
-    while_token = "WHILE"
-    return_token = "RETURN"
-    true_token = "TRUE"
-    false_token = "FALSE"
-    null_token = "NULL"
-    this_token = "THIS"
+    class_token = "class"
+    method_token = "method"
+    function_token = "function"
+    constructor_token = "constructor"
+    int_token = "int"
+    bool_token = "boolean"
+    char_token = "char"
+    void_token = "void"
+    var_token = "var"
+    static_token = "static"
+    field_token = "field"
+    let_token = "let"
+    do_token = "do"
+    if_token = "if"
+    else_token = "else"
+    while_token = "while"
+    return_token = "return"
+    true_token = "true"
+    false_token = "false"
+    null_token = "null"
+    this_token = "this"
 
     @classmethod
     def contains(cls, item: str) -> bool:
@@ -101,7 +103,7 @@ class TokenTypeGetHelper:
             cls.token_is_comment = False if string[-2:] == "*/" else True
             return TokenType.comment
 
-        if KeywordToken.contains(string.upper()):
+        if KeywordToken.contains(string):
             return TokenType.keyword
 
         if string in SYMBOLS:
@@ -155,7 +157,7 @@ class Token:
                 string_token = ""
 
             if type == TokenType.keyword:
-                keyword_value = KeywordToken(word.upper())
+                keyword_value = KeywordToken(word)
                 tokens.append(cls(keyword_value, type))
                 continue
 
@@ -176,7 +178,9 @@ class Token:
             token = ""
 
             for char in word:
-                if char in SYMBOLS and not CommentCatcher.is_comment_in_word(word):
+                if char in SYMBOLS and not (
+                    CommentCatcher.is_comment_in_word(word) and char in COMMENT_SYMBOLS
+                ):
                     if token != "":
                         tokens.append(token)
                     tokens.append(char)

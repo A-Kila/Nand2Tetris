@@ -1,0 +1,373 @@
+// class
+// class var dec
+// class var dec
+// subroutine dec
+// parameter list
+// subroutine body
+function SquareGame.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+// statements
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+// expression
+// term
+push constant 0
+// expression
+// term
+push constant 0
+// expression
+// term
+push constant 30
+call Square.new 3
+pop this 0
+// let statement
+// expression
+// term
+push constant 0
+pop this 1
+// return statement
+// expression
+// term
+// keyword constant
+push pointer 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function SquareGame.dispose 0
+push argument 0
+pop pointer 0
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Square.dispose 1
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function SquareGame.moveSquare 0
+push argument 0
+pop pointer 0
+// statements
+// if statement
+// expression
+// term
+push this 1
+// term
+push constant 1
+eq
+not
+if-goto LABEL_12
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Square.moveUp 1
+pop temp 0
+goto LABEL_13
+label LABEL_12
+label LABEL_13
+// if statement
+// expression
+// term
+push this 1
+// term
+push constant 2
+eq
+not
+if-goto LABEL_14
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Square.moveDown 1
+pop temp 0
+goto LABEL_15
+label LABEL_14
+label LABEL_15
+// if statement
+// expression
+// term
+push this 1
+// term
+push constant 3
+eq
+not
+if-goto LABEL_16
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Square.moveLeft 1
+pop temp 0
+goto LABEL_17
+label LABEL_16
+label LABEL_17
+// if statement
+// expression
+// term
+push this 1
+// term
+push constant 4
+eq
+not
+if-goto LABEL_18
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Square.moveRight 1
+pop temp 0
+goto LABEL_19
+label LABEL_18
+label LABEL_19
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 5
+call Sys.wait 1
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+// var dec
+// var dec
+function SquareGame.run 2
+push argument 0
+pop pointer 0
+// statements
+// let statement
+// expression
+// term
+// keyword constant
+push constant 0
+pop local 1
+// while statement
+label LABEL_20
+// expression
+// term
+// term
+push local 1
+not
+not
+if-goto LABEL_21
+// statements
+// while statement
+label LABEL_22
+// expression
+// term
+push local 0
+// term
+push constant 0
+eq
+not
+if-goto LABEL_23
+// statements
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+call Keyboard.keyPressed 0
+pop local 0
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call SquareGame.moveSquare 1
+pop temp 0
+goto LABEL_22
+label LABEL_23
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 81
+eq
+not
+if-goto LABEL_24
+// statements
+// let statement
+// expression
+// term
+// keyword constant
+push constant 1
+neg
+pop local 1
+goto LABEL_25
+label LABEL_24
+label LABEL_25
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 90
+eq
+not
+if-goto LABEL_26
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Square.decSize 1
+pop temp 0
+goto LABEL_27
+label LABEL_26
+label LABEL_27
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 88
+eq
+not
+if-goto LABEL_28
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Square.incSize 1
+pop temp 0
+goto LABEL_29
+label LABEL_28
+label LABEL_29
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 131
+eq
+not
+if-goto LABEL_30
+// statements
+// let statement
+// expression
+// term
+push constant 1
+pop this 1
+goto LABEL_31
+label LABEL_30
+label LABEL_31
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 133
+eq
+not
+if-goto LABEL_32
+// statements
+// let statement
+// expression
+// term
+push constant 2
+pop this 1
+goto LABEL_33
+label LABEL_32
+label LABEL_33
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 130
+eq
+not
+if-goto LABEL_34
+// statements
+// let statement
+// expression
+// term
+push constant 3
+pop this 1
+goto LABEL_35
+label LABEL_34
+label LABEL_35
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 132
+eq
+not
+if-goto LABEL_36
+// statements
+// let statement
+// expression
+// term
+push constant 4
+pop this 1
+goto LABEL_37
+label LABEL_36
+label LABEL_37
+// while statement
+label LABEL_38
+// expression
+// term
+// term
+// expression
+// term
+push local 0
+// term
+push constant 0
+eq
+not
+not
+if-goto LABEL_39
+// statements
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+call Keyboard.keyPressed 0
+pop local 0
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call SquareGame.moveSquare 1
+pop temp 0
+goto LABEL_38
+label LABEL_39
+goto LABEL_20
+label LABEL_21
+// return statement
+push constant 0
+return

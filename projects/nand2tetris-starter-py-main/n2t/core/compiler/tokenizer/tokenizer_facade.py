@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Iterable, Iterator
 
-from n2t.core.compiler.syntax_analyzer.tokenizer.token import Token, TokenType
+from n2t.core.compiler.tokenizer.token import Token, TokenType
 from n2t.core.compiler.xml_symbols import XMLSymbols
 from n2t.infra.io import FileFormat
 

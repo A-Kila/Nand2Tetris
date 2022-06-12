@@ -1,0 +1,693 @@
+// class
+// class var dec
+// class var dec
+// class var dec
+// class var dec
+// class var dec
+// class var dec
+// class var dec
+// class var dec
+// subroutine dec
+// parameter list
+// subroutine body
+function PongGame.new 0
+push constant 7
+call Memory.alloc 1
+pop pointer 0
+// statements
+// do statement
+// subroutine call
+// expression list
+call Screen.clearScreen 0
+pop temp 0
+// let statement
+// expression
+// term
+push constant 50
+pop this 6
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+// expression
+// term
+push constant 230
+// expression
+// term
+push constant 229
+// expression
+// term
+push this 6
+// expression
+// term
+push constant 7
+call Bat.new 4
+pop this 0
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+// expression
+// term
+push constant 253
+// expression
+// term
+push constant 222
+// expression
+// term
+push constant 0
+// expression
+// term
+push constant 511
+// expression
+// term
+push constant 0
+// expression
+// term
+push constant 229
+call Ball.new 6
+pop this 1
+// do statement
+// subroutine call
+push this 1
+// expression list
+// expression
+// term
+push constant 400
+// expression
+// term
+push constant 0
+call Ball.setDestination 3
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 0
+// expression
+// term
+push constant 238
+// expression
+// term
+push constant 511
+// expression
+// term
+push constant 240
+call Screen.drawRectangle 4
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 22
+// expression
+// term
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// string
+push constant 8
+call String.new 1
+push constant 83
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+// let statement
+// expression
+// term
+// keyword constant
+push constant 0
+pop this 3
+// let statement
+// expression
+// term
+push constant 0
+pop this 4
+// let statement
+// expression
+// term
+push constant 0
+pop this 2
+// let statement
+// expression
+// term
+push constant 0
+pop this 5
+// return statement
+// expression
+// term
+// keyword constant
+push pointer 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function PongGame.dispose 0
+push argument 0
+pop pointer 0
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Bat.dispose 1
+pop temp 0
+// do statement
+// subroutine call
+push this 1
+// expression list
+call Ball.dispose 1
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function PongGame.newInstance 0
+// statements
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+call PongGame.new 0
+pop static 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function PongGame.getInstance 0
+// statements
+// return statement
+// expression
+// term
+push static 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+// var dec
+function PongGame.run 1
+push argument 0
+pop pointer 0
+// statements
+// while statement
+label LABEL_34
+// expression
+// term
+// term
+push this 3
+not
+not
+if-goto LABEL_35
+// statements
+// while statement
+label LABEL_36
+// expression
+// term
+// expression
+// term
+push local 0
+// term
+push constant 0
+eq
+// term
+// expression
+// term
+// term
+push this 3
+not
+and
+not
+if-goto LABEL_37
+// statements
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+call Keyboard.keyPressed 0
+pop local 0
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Bat.move 1
+pop temp 0
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call PongGame.moveBall 1
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 50
+call Sys.wait 1
+pop temp 0
+goto LABEL_36
+label LABEL_37
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 130
+eq
+not
+if-goto LABEL_38
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+// expression
+// term
+push constant 1
+call Bat.setDirection 2
+pop temp 0
+goto LABEL_39
+label LABEL_38
+// statements
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 132
+eq
+not
+if-goto LABEL_40
+// statements
+// do statement
+// subroutine call
+push this 0
+// expression list
+// expression
+// term
+push constant 2
+call Bat.setDirection 2
+pop temp 0
+goto LABEL_41
+label LABEL_40
+// statements
+// if statement
+// expression
+// term
+push local 0
+// term
+push constant 140
+eq
+not
+if-goto LABEL_42
+// statements
+// let statement
+// expression
+// term
+// keyword constant
+push constant 1
+neg
+pop this 3
+goto LABEL_43
+label LABEL_42
+label LABEL_43
+label LABEL_41
+label LABEL_39
+// while statement
+label LABEL_44
+// expression
+// term
+// expression
+// term
+// term
+// expression
+// term
+push local 0
+// term
+push constant 0
+eq
+not
+// term
+// expression
+// term
+// term
+push this 3
+not
+and
+not
+if-goto LABEL_45
+// statements
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+call Keyboard.keyPressed 0
+pop local 0
+// do statement
+// subroutine call
+push this 0
+// expression list
+call Bat.move 1
+pop temp 0
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call PongGame.moveBall 1
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 50
+call Sys.wait 1
+pop temp 0
+goto LABEL_44
+label LABEL_45
+goto LABEL_34
+label LABEL_35
+// if statement
+// expression
+// term
+push this 3
+not
+if-goto LABEL_46
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 10
+// expression
+// term
+push constant 27
+call Output.moveCursor 2
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// string
+push constant 9
+call String.new 1
+push constant 71
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+goto LABEL_47
+label LABEL_46
+label LABEL_47
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+// var dec
+function PongGame.moveBall 5
+push argument 0
+pop pointer 0
+// statements
+// let statement
+// expression
+// term
+// subroutine call
+push this 1
+// expression list
+call Ball.move 1
+pop this 2
+// if statement
+// expression
+// term
+// expression
+// term
+push this 2
+// term
+push constant 0
+gt
+// term
+// expression
+// term
+// term
+// expression
+// term
+push this 2
+// term
+push this 5
+eq
+not
+and
+not
+if-goto LABEL_48
+// statements
+// let statement
+// expression
+// term
+push this 2
+pop this 5
+// let statement
+// expression
+// term
+push constant 0
+pop local 0
+// let statement
+// expression
+// term
+// subroutine call
+push this 0
+// expression list
+call Bat.getLeft 1
+pop local 1
+// let statement
+// expression
+// term
+// subroutine call
+push this 0
+// expression list
+call Bat.getRight 1
+pop local 2
+// let statement
+// expression
+// term
+// subroutine call
+push this 1
+// expression list
+call Ball.getLeft 1
+pop local 3
+// let statement
+// expression
+// term
+// subroutine call
+push this 1
+// expression list
+call Ball.getRight 1
+pop local 4
+// if statement
+// expression
+// term
+push this 2
+// term
+push constant 4
+eq
+not
+if-goto LABEL_50
+// statements
+// let statement
+// expression
+// term
+// expression
+// term
+push local 1
+// term
+push local 4
+gt
+// term
+// expression
+// term
+push local 2
+// term
+push local 3
+lt
+or
+pop this 3
+// if statement
+// expression
+// term
+// term
+push this 3
+not
+not
+if-goto LABEL_52
+// statements
+// if statement
+// expression
+// term
+push local 4
+// term
+// expression
+// term
+push local 1
+// term
+push constant 10
+add
+lt
+not
+if-goto LABEL_54
+// statements
+// let statement
+// expression
+// term
+// term
+push constant 1
+neg
+pop local 0
+goto LABEL_55
+label LABEL_54
+// statements
+// if statement
+// expression
+// term
+push local 3
+// term
+// expression
+// term
+push local 2
+// term
+push constant 10
+sub
+gt
+not
+if-goto LABEL_56
+// statements
+// let statement
+// expression
+// term
+push constant 1
+pop local 0
+goto LABEL_57
+label LABEL_56
+label LABEL_57
+label LABEL_55
+// let statement
+// expression
+// term
+push this 6
+// term
+push constant 2
+sub
+pop this 6
+// do statement
+// subroutine call
+push this 0
+// expression list
+// expression
+// term
+push this 6
+call Bat.setWidth 2
+pop temp 0
+// let statement
+// expression
+// term
+push this 4
+// term
+push constant 1
+add
+pop this 4
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 22
+// expression
+// term
+push constant 7
+call Output.moveCursor 2
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push this 4
+call Output.printInt 1
+pop temp 0
+goto LABEL_53
+label LABEL_52
+label LABEL_53
+goto LABEL_51
+label LABEL_50
+label LABEL_51
+// do statement
+// subroutine call
+push this 1
+// expression list
+// expression
+// term
+push local 0
+call Ball.bounce 2
+pop temp 0
+goto LABEL_49
+label LABEL_48
+label LABEL_49
+// return statement
+push constant 0
+return

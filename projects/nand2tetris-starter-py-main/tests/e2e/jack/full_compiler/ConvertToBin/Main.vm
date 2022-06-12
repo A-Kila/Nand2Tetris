@@ -1,0 +1,257 @@
+// class
+// subroutine dec
+// parameter list
+// subroutine body
+// var dec
+function Main.main 1
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 8000
+// expression
+// term
+// term
+push constant 18289
+neg
+call Memory.poke 2
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 8001
+// expression
+// term
+push constant 16
+// expression
+// term
+// term
+push constant 1
+neg
+call Main.fillMemory 3
+pop temp 0
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+// expression
+// term
+push constant 8000
+call Memory.peek 1
+pop local 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push local 0
+call Main.convert 1
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+// var dec
+// var dec
+function Main.convert 3
+// statements
+// let statement
+// expression
+// term
+// keyword constant
+push constant 1
+neg
+pop local 2
+// while statement
+label LABEL_0
+// expression
+// term
+push local 2
+not
+if-goto LABEL_1
+// statements
+// let statement
+// expression
+// term
+push local 1
+// term
+push constant 1
+add
+pop local 1
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+// expression
+// term
+push local 0
+call Main.nextMask 1
+pop local 0
+// if statement
+// expression
+// term
+// term
+// expression
+// term
+push local 1
+// term
+push constant 16
+gt
+not
+not
+if-goto LABEL_2
+// statements
+// if statement
+// expression
+// term
+// term
+// expression
+// term
+// expression
+// term
+push argument 0
+// term
+push local 0
+and
+// term
+push constant 0
+eq
+not
+not
+if-goto LABEL_4
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 8000
+// term
+push local 1
+add
+// expression
+// term
+push constant 1
+call Memory.poke 2
+pop temp 0
+goto LABEL_5
+label LABEL_4
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 8000
+// term
+push local 1
+add
+// expression
+// term
+push constant 0
+call Memory.poke 2
+pop temp 0
+label LABEL_5
+goto LABEL_3
+label LABEL_2
+// statements
+// let statement
+// expression
+// term
+// keyword constant
+push constant 0
+pop local 2
+label LABEL_3
+goto LABEL_0
+label LABEL_1
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Main.nextMask 0
+// statements
+// if statement
+// expression
+// term
+push argument 0
+// term
+push constant 0
+eq
+not
+if-goto LABEL_6
+// statements
+// return statement
+// expression
+// term
+push constant 1
+return
+goto LABEL_7
+label LABEL_6
+// statements
+// return statement
+// expression
+// term
+push argument 0
+// term
+push constant 2
+call Math.multiply 2
+return
+label LABEL_7
+// subroutine dec
+// parameter list
+// subroutine body
+function Main.fillMemory 0
+// statements
+// while statement
+label LABEL_8
+// expression
+// term
+push argument 1
+// term
+push constant 0
+gt
+not
+if-goto LABEL_9
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push argument 0
+// expression
+// term
+push argument 2
+call Memory.poke 2
+pop temp 0
+// let statement
+// expression
+// term
+push argument 1
+// term
+push constant 1
+sub
+pop argument 1
+// let statement
+// expression
+// term
+push argument 0
+// term
+push constant 1
+add
+pop argument 0
+goto LABEL_8
+label LABEL_9
+// return statement
+push constant 0
+return

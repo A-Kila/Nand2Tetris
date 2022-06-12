@@ -294,12 +294,14 @@
         <keyword> var </keyword>
         <keyword> char </keyword>
         <identifier> key </identifier>
+      char local 0
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <keyword> boolean </keyword>
         <identifier> exit </identifier>
+      boolean local 1
         <symbol> ; </symbol>
       </varDec>
       <statements>

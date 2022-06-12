@@ -1,0 +1,34 @@
+// class
+// subroutine dec
+// parameter list
+// subroutine body
+// var dec
+function Main.main 1
+// statements
+// do statement
+// subroutine call
+// expression list
+call PongGame.newInstance 0
+pop temp 0
+// let statement
+// expression
+// term
+// subroutine call
+// expression list
+call PongGame.getInstance 0
+pop local 0
+// do statement
+// subroutine call
+push local 0
+// expression list
+call PongGame.run 1
+pop temp 0
+// do statement
+// subroutine call
+push local 0
+// expression list
+call PongGame.dispose 1
+pop temp 0
+// return statement
+push constant 0
+return

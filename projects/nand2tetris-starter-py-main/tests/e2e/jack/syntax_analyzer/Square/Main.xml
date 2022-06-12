@@ -22,6 +22,7 @@
         <keyword> var </keyword>
         <identifier> SquareGame </identifier>
         <identifier> game </identifier>
+      SquareGame local 0
         <symbol> ; </symbol>
       </varDec>
       <statements>
@@ -86,20 +87,24 @@
         <keyword> var </keyword>
         <keyword> int </keyword>
         <identifier> i </identifier>
+      int local 1
         <symbol> , </symbol>
         <identifier> j </identifier>
+      int local 2
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <identifier> String </identifier>
         <identifier> s </identifier>
+      String local 3
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <identifier> Array </identifier>
         <identifier> a </identifier>
+      Array local 4
         <symbol> ; </symbol>
       </varDec>
       <statements>

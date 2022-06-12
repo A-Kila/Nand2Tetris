@@ -1,0 +1,459 @@
+// class
+// class var dec
+// class var dec
+// class var dec
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+// statements
+// let statement
+// expression
+// term
+push argument 0
+pop this 0
+// let statement
+// expression
+// term
+push argument 1
+pop this 1
+// let statement
+// expression
+// term
+push argument 2
+pop this 2
+// let statement
+// expression
+// term
+push argument 3
+pop this 3
+// let statement
+// expression
+// term
+push constant 2
+pop this 4
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call Bat.show 1
+pop temp 0
+// return statement
+// expression
+// term
+// keyword constant
+push pointer 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.dispose 0
+push argument 0
+pop pointer 0
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.show 0
+push argument 0
+pop pointer 0
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push constant 1
+neg
+call Screen.setColor 1
+pop temp 0
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call Bat.draw 1
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.hide 0
+push argument 0
+pop pointer 0
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push constant 0
+call Screen.setColor 1
+pop temp 0
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call Bat.draw 1
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.draw 0
+push argument 0
+pop pointer 0
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push this 0
+// expression
+// term
+push this 1
+// expression
+// term
+push this 0
+// term
+push this 2
+add
+// expression
+// term
+push this 1
+// term
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.setDirection 0
+push argument 0
+pop pointer 0
+// statements
+// let statement
+// expression
+// term
+push argument 1
+pop this 4
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.getLeft 0
+push argument 0
+pop pointer 0
+// statements
+// return statement
+// expression
+// term
+push this 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.getRight 0
+push argument 0
+pop pointer 0
+// statements
+// return statement
+// expression
+// term
+push this 0
+// term
+push this 2
+add
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.setWidth 0
+push argument 0
+pop pointer 0
+// statements
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call Bat.hide 1
+pop temp 0
+// let statement
+// expression
+// term
+push argument 1
+pop this 2
+// do statement
+// subroutine call
+push pointer 0
+// expression list
+call Bat.show 1
+pop temp 0
+// return statement
+push constant 0
+return
+// subroutine dec
+// parameter list
+// subroutine body
+function Bat.move 0
+push argument 0
+pop pointer 0
+// statements
+// if statement
+// expression
+// term
+push this 4
+// term
+push constant 1
+eq
+not
+if-goto LABEL_58
+// statements
+// let statement
+// expression
+// term
+push this 0
+// term
+push constant 4
+sub
+pop this 0
+// if statement
+// expression
+// term
+push this 0
+// term
+push constant 0
+lt
+not
+if-goto LABEL_60
+// statements
+// let statement
+// expression
+// term
+push constant 0
+pop this 0
+goto LABEL_61
+label LABEL_60
+label LABEL_61
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push constant 0
+call Screen.setColor 1
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// expression
+// term
+push this 0
+// term
+push this 2
+add
+// term
+push constant 1
+add
+// expression
+// term
+push this 1
+// expression
+// term
+// expression
+// term
+push this 0
+// term
+push this 2
+add
+// term
+push constant 4
+add
+// expression
+// term
+push this 1
+// term
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push constant 1
+neg
+call Screen.setColor 1
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push this 0
+// expression
+// term
+push this 1
+// expression
+// term
+push this 0
+// term
+push constant 3
+add
+// expression
+// term
+push this 1
+// term
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+goto LABEL_59
+label LABEL_58
+// statements
+// let statement
+// expression
+// term
+push this 0
+// term
+push constant 4
+add
+pop this 0
+// if statement
+// expression
+// term
+// expression
+// term
+push this 0
+// term
+push this 2
+add
+// term
+push constant 511
+gt
+not
+if-goto LABEL_62
+// statements
+// let statement
+// expression
+// term
+push constant 511
+// term
+push this 2
+sub
+pop this 0
+goto LABEL_63
+label LABEL_62
+label LABEL_63
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push constant 0
+call Screen.setColor 1
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push this 0
+// term
+push constant 4
+sub
+// expression
+// term
+push this 1
+// expression
+// term
+push this 0
+// term
+push constant 1
+sub
+// expression
+// term
+push this 1
+// term
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// keyword constant
+push constant 1
+neg
+call Screen.setColor 1
+pop temp 0
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+// expression
+// term
+push this 0
+// term
+push this 2
+add
+// term
+push constant 3
+sub
+// expression
+// term
+push this 1
+// expression
+// term
+push this 0
+// term
+push this 2
+add
+// expression
+// term
+push this 1
+// term
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+label LABEL_59
+// return statement
+push constant 0
+return

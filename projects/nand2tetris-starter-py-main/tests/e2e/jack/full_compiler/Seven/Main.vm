@@ -1,0 +1,24 @@
+// class
+// subroutine dec
+// parameter list
+// subroutine body
+function Main.main 0
+// statements
+// do statement
+// subroutine call
+// expression list
+// expression
+// term
+push constant 1
+// term
+// expression
+// term
+push constant 2
+// term
+push constant 3
+call Math.multiply 2
+add
+call Output.printInt 1
+pop temp 0
+// return statement
+push constant 0
