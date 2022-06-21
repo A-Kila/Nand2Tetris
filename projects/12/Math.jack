@@ -9,12 +9,37 @@
  */
 class Math {
 
+    static Array bits;
+
     /** Initializes the library. */
     function void init() {
+        let bits = Array.new(16);
+        let bits[0] = 1;
+        let bits[1] = 2;
+        let bits[2] = 4;
+        let bits[3] = 8;
+        let bits[4] = 16;
+        let bits[5] = 32;
+        let bits[6] = 64;
+        let bits[7] = 128;
+        let bits[8] = 256;
+        let bits[9] = 512;
+        let bits[10] = 1024;
+        let bits[11] = 2048;
+        let bits[12] = 4096;
+        let bits[13] = 8192;
+        let bits[14] = 16384;
+        let bits[15] = 16384 + 16384;
+        return;
     }
 
     /** Returns the absolute value of x. */
     function int abs(int x) {
+        if (x < 0) {
+            return -x;
+        }
+
+        return x;
     }
 
     /** Returns the product of x and y. 
@@ -23,6 +48,21 @@ class Math {
      *  the Jack expressions x*y and multiply(x,y) return the same value.
      */
     function int multiply(int x, int y) {
+        var int sum, xShifted, i;
+        let sum = 0;
+        let xShifted = x;
+        let i = 0;
+
+        while (i < 16) {
+            if (~((y & bits[i]) = 0)) {
+                let sum = sum + xShifted;
+            }
+
+            let i = i + 1;
+            let xShifted = xShifted + xShifted;
+        }
+
+        return sum;
     }
 
     /** Returns the integer part of x/y.
@@ -31,17 +71,70 @@ class Math {
      *  the Jack expressions x/y and divide(x,y) return the same value.
      */
     function int divide(int x, int y) {
+        var int q, sign;
+        let sign = 1;
+        if (x < 0) {
+            let sign = -sign;
+        }
+        if (y < 0) {
+            let sign = -sign;
+        }
+        let y = Math.abs(y);
+        let x = Math.abs(x);
+
+        if (y > x) {
+            return 0;
+        }
+
+        let q = Math.divide(x, y + y);
+
+        if ((x - (2 * q * y)) < y) {
+            return 2 * q * sign; 
+        }
+
+        return (2 * q + 1) * sign;
     }
 
     /** Returns the integer part of the square root of x. */
     function int sqrt(int x) {
+        var int y, j, pred, predSq;
+        let y = 0;
+        let j = 0;
+
+        while ((j < 16) & (x > bits[j])) {
+            let j = j + 1;
+        }
+        let j = j / 2 - 1;
+
+        while (~(j < 0)) {
+            let pred = y + bits[j];
+            let predSq = pred * pred;
+
+            if (~(predSq > x) & (predSq > 0)) {
+                let y = pred;
+            }
+
+            let j = j - 1;
+        }
+
+        return y;
     }
 
     /** Returns the greater number. */
     function int max(int a, int b) {
+        if (a > b) {
+            return a;
+        }
+
+        return b;
     }
 
     /** Returns the smaller number. */
     function int min(int a, int b) {
+        if (a < b) {
+            return a;
+        }
+
+        return b;
     }
 }

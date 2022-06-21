@@ -9,26 +9,79 @@
  * consists of 32,768 words, each holding a 16-bit binary number.
  */ 
 class Memory {
+    
+    static Array ram, freeList, lastFreeBlock;
+    static int HEAP, HEAP_END, NEXT, SIZE;
 
     /** Initializes the class. */
     function void init() {
+        let ram = 0;
+        let HEAP = 2048;
+        let HEAP_END = 16384;
+
+        let NEXT = 0;
+        let SIZE = 1;
+
+        let freeList = HEAP;
+        let freeList[NEXT] = null;
+        let freeList[SIZE] = HEAP_END - HEAP;
+        
+        let lastFreeBlock = freeList;
+
+        return;
     }
 
     /** Returns the RAM value at the given address. */
     function int peek(int address) {
+        return ram[address];
     }
 
     /** Sets the RAM value at the given address to the given value. */
     function void poke(int address, int value) {
+        let ram[address] = value;
+        return;
     }
 
     /** Finds an available RAM block of the given size and returns
      *  a reference to its base address. */
     function int alloc(int size) {
+        var Array freeSegment, block;
+        let freeSegment = Memory.findFreeSegment(size);
+
+        let block = freeSegment + freeSegment[SIZE] - size - 2;
+        let block[SIZE] = size + 2;
+        let block[NEXT] = null;
+
+        let freeSegment[SIZE] = freeSegment[SIZE] - size - 2;
+
+        return block + 2;
     }
 
     /** De-allocates the given object (cast as an array) by making
      *  it available for future allocations. */
     function void deAlloc(Array o) {
+        var Array newBlock;
+
+        let newBlock = o - 2;
+        let lastFreeBlock[NEXT] = newBlock;
+
+        let newBlock[NEXT] = null;
+        let lastFreeBlock = newBlock;
+        
+        return;
     }    
+
+    function Array findFreeSegment(int size) {
+        var Array currArray;
+        let currArray = freeList;
+
+        while (~(currArray = null) & (currArray[SIZE] < size)) {
+            let currArray = currArray[NEXT];
+        }
+        if (currArray = null) {
+            do Sys.error(400);
+        }
+
+        return currArray;
+    }
 }
