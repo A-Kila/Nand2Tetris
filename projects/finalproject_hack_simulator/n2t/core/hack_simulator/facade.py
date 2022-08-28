@@ -8,5 +8,5 @@ class HackSimulator:
     def create(cls) -> HackSimulator:
         return cls()
 
-    def simulate(self, hack: Iterable[str]) -> Iterable[str]:
+    def simulate(self, hack: Iterable[str], cycles: int) -> Iterable[str]:
         pass

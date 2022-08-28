@@ -1,4 +1,6 @@
-from typer import Option, Typer
+from typer import Option, Typer, echo
+
+from n2t.infra.hack_simulator import HackSimProgram
 
 cli = Typer(
     name="NAND 2 Tetris Hack Simulator",
@@ -11,4 +13,6 @@ cli = Typer(
 def run_simulator(
     hack_file: str, cycles: int = Option(10000, help="Number of CPU cycles")
 ) -> None:
-    pass
+    echo(f"Disassembling {hack_file}")
+    HackSimProgram.load_from(hack_file, cycles).simulate()
+    echo("Done!")
