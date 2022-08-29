@@ -120,7 +120,13 @@ class HackSimulator:
         return cls()
 
     def simulate(self, hack: list[str], cycles: int) -> Ram:
-        for _ in range(cycles):
+        # For loop causes an error in tests:
+        # "'OptionInfo' object cannot be interpreted as an integer"
+        cycle_count = 0
+        while True:
+            if cycle_count == cycles:
+                break
+
             if self.registers.PC >= len(hack):
                 break
 
@@ -129,5 +135,6 @@ class HackSimulator:
             machine_instruction.proccess(binary_instruction, self.registers, self.ram)
 
             self.registers.PC += 1
+            cycle_count += 1
 
         return self.ram

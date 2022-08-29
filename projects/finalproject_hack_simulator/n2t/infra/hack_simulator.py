@@ -15,7 +15,7 @@ class RamPrinter:
         for i in range(ram.get_size()):
             is_used, value = ram.get(i)
 
-            line = f"Ram[{i}]: {'{0:016b}'.format(value) if is_used else ''}"
+            line = f"Ram[{i}]:{' {0:016b}'.format(value) if is_used else ''}"
             result.append(line)
 
         return result
