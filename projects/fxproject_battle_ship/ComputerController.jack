@@ -1,0 +1,168 @@
+class ComputerController {
+
+    static Array grids;
+    static int gridsLength;
+
+    static boolean isVert, isStay, isFirstShot;
+    static int isLastHit, hitX, hitY, currX, currY;
+
+    function void init() {
+        var Array stringGrid;
+
+        let gridsLength = 3;
+        let grids = Array.new(gridsLength);
+        
+        let grids[0] = Array.new(10);
+        let stringGrid = grids[0];
+        let stringGrid[0] = "1111100000";
+        let stringGrid[1] = "0000000001";
+        let stringGrid[2] = "0001000001";
+        let stringGrid[3] = "1001001001";
+        let stringGrid[4] = "0001000000";
+        let stringGrid[5] = "0001001000";
+        let stringGrid[6] = "1100000000";
+        let stringGrid[7] = "0000000001";
+        let stringGrid[8] = "0100011001";
+        let stringGrid[9] = "0000000001";
+
+        let grids[1] = Array.new(10);
+        let stringGrid = grids[1];
+        let stringGrid[0] = "1000000011";
+        let stringGrid[1] = "1001110000";
+        let stringGrid[2] = "1000000100";
+        let stringGrid[3] = "1000100100";
+        let stringGrid[4] = "1000000100";
+        let stringGrid[5] = "0000100000";
+        let stringGrid[6] = "0000001101";
+        let stringGrid[7] = "1000000000";
+        let stringGrid[8] = "0011110000";
+        let stringGrid[9] = "0000000011";
+
+        let grids[2] = Array.new(10);
+        let stringGrid = grids[2];
+        let stringGrid[0] = "1100010001";
+        let stringGrid[1] = "0000010000";
+        let stringGrid[2] = "0100010000";
+        let stringGrid[3] = "0000000011";
+        let stringGrid[4] = "0111110000";
+        let stringGrid[5] = "0000000000";
+        let stringGrid[6] = "0000000100";
+        let stringGrid[7] = "1110000100";
+        let stringGrid[8] = "0000000100";
+        let stringGrid[9] = "0101100101";
+
+        let isVert = true;
+        let isStay = false;
+        let isFirstShot = true;
+        let isLastHit = 0;
+        let hitX = 0;
+        let hitY = 0;
+        let currX = 0;
+        let currY = 0;
+
+        return;
+    }
+    
+    // Random generation works in a very slow way, so grids are predifined
+    function void generateShips(Player computer, int seed) {
+        var Array grid;
+        var int index, randomNum, div;
+        
+        do Random.init(seed);
+        let randomNum = Random.getPseudoRandom();
+
+        let div = randomNum / gridsLength;
+        let index = randomNum - (gridsLength * div);
+        do ComputerController.setGridFromString(index, computer);
+
+        return;
+    }
+
+    function void setGridFromString(int index, Player computer) {
+        var String row;
+        var Grid genGrid, compGrid;
+        var int i, j;
+
+        let genGrid = grids[index];
+        let compGrid = computer.getGrid();
+
+        let i = 0;
+        while (i < 10) {
+            let row = genGrid[i];
+
+            let j = 0;
+            while (j < 10) {
+                if (row.charAt(j) = 49) { // "1"
+                    do compGrid.toggleFill(j, i, true);
+                }
+
+                let j = j + 1;
+            }
+
+            let i = i + 1;
+        }
+
+        do compGrid.validShips();
+        return;
+    }
+
+    function booelan shoot(Player player) {
+        if ((isLastHit = 0) | (isLastHit = 3)) {
+            if (~isFirstShot) {
+                do ComputerController.moveNext();
+            } else {
+                let isFirstShot = ~isFirstShot;
+            }
+
+            let isLastHit = player.shootAt(currX, currY);
+            return ~(isLastHit = 0);
+        }
+
+        if (isVert) {
+            let hitY = hitY + 1;
+        } else {
+            let hitX = hitX + 1;
+        }
+
+        let isLastHit = player.shootAt(hitX, hitY);
+
+        if (isLastHit = 1) {
+            let isStay = true;
+            return true;
+        }
+
+        if (isStay) {
+            let isStay = false;
+
+            let hitX = currX;
+            let hitY = currY;
+
+            do ComputerController.moveNext();
+            do ComputerController.moveNext();
+            return isLastHit;
+        }
+
+        let isVert = ~isVert;
+        
+        return isLastHit;
+    }
+
+    function void moveNext() {
+        let currX = currX + 1;
+        
+        if (currX = 10) {
+            let currX = 0;
+            let currY = currY + 1;
+        }
+
+        if (currY = 10) {
+            let currY = 0;
+        }
+
+        let hitX = currX;
+        let hitY = currY;
+
+        return;
+    }
+
+}

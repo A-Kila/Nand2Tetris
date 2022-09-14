@@ -1,0 +1,48 @@
+class Match {
+    field Player player, computer;
+
+    constructor Match new() {
+        let player = Player.new(15, 235, 25, 245);
+        let computer = Player.new(265, 485, 25, 245);
+
+        return this;
+    }
+
+    method void dispose() {
+        do player.dispose();
+        do computer.dispose();
+
+        return;
+    }
+
+    method boolean play() {
+        do Screen.clearScreen();
+
+        do ComputerController.init();
+        do player.drawGrid(true);
+        do computer.drawGrid(false);
+
+        do player.putShips();
+        do ComputerController.generateShips(computer, player.getSeedFromGrid());
+
+        while (true) {
+            do player.toggleBold(false);
+            do computer.toggleBold(true);
+
+            while (player.userShoot(computer)) {
+                if (computer.isLost()) {
+                    return true;
+                }
+            }
+
+            while (ComputerController.shoot(player)) {
+                if (player.isLost()) {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+}

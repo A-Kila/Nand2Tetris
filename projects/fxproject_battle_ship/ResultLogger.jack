@@ -1,0 +1,30 @@
+class ResultLogger {
+    function void logResult(boolean isWin) {
+        do Screen.clearScreen();
+
+        if (isWin) {
+            do Output.printString("Congratulations, You Won!");
+        } else {
+            do Output.printString(":( Sorry, You Lost.");
+        }
+
+        do Output.println();
+
+        return;
+    }
+
+    function void waitForRestart() {
+        var int key;
+        let key = 0;
+
+        do Output.printString("Press space to start again!");
+        do Output.println();
+
+        // wait for space
+        while (~(key = 32)) {
+            let key = Keyboard.keyPressed();
+        }
+        
+        return;
+    }
+}

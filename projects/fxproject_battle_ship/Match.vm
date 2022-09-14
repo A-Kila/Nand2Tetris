@@ -1,0 +1,103 @@
+function Match.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+push constant 15
+push constant 235
+push constant 25
+push constant 245
+call Player.new 4
+pop this 0
+push constant 265
+push constant 485
+push constant 25
+push constant 245
+call Player.new 4
+pop this 1
+push pointer 0
+return
+function Match.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Player.dispose 1
+pop temp 0
+push this 1
+call Player.dispose 1
+pop temp 0
+push constant 0
+return
+function Match.play 0
+push argument 0
+pop pointer 0
+call Screen.clearScreen 0
+pop temp 0
+call ComputerController.init 0
+pop temp 0
+push this 0
+push constant 0
+not
+call Player.drawGrid 2
+pop temp 0
+push this 1
+push constant 0
+call Player.drawGrid 2
+pop temp 0
+push this 0
+call Player.putShips 1
+pop temp 0
+push this 1
+push this 0
+call Player.getSeedFromGrid 1
+call ComputerController.generateShips 2
+pop temp 0
+label WHILE_EXP0
+push constant 0
+not
+not
+if-goto WHILE_END0
+push this 0
+push constant 0
+call Player.toggleBold 2
+pop temp 0
+push this 1
+push constant 0
+not
+call Player.toggleBold 2
+pop temp 0
+label WHILE_EXP1
+push this 0
+push this 1
+call Player.userShoot 2
+not
+if-goto WHILE_END1
+push this 1
+call Player.isLost 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+goto WHILE_EXP1
+label WHILE_END1
+label WHILE_EXP2
+push this 0
+call ComputerController.shoot 1
+not
+if-goto WHILE_END2
+push this 0
+call Player.isLost 1
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+goto WHILE_EXP2
+label WHILE_END2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

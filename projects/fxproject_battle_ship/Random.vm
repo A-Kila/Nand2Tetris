@@ -1,0 +1,43 @@
+function Random.init 0
+push argument 0
+pop static 0
+push constant 0
+return
+function Random.getPseudoRandom 4
+push constant 257
+pop local 0
+push constant 75
+pop local 1
+push constant 74
+pop local 2
+push local 1
+push static 0
+call Math.multiply 2
+push local 2
+add
+pop static 0
+push local 0
+push constant 0
+eq
+push static 0
+push local 0
+lt
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push static 0
+return
+label IF_FALSE0
+push static 0
+push local 0
+call Math.divide 2
+pop local 3
+push static 0
+push local 0
+push local 3
+call Math.multiply 2
+sub
+pop static 0
+push static 0
+return

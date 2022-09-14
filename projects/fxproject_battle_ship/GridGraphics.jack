@@ -1,0 +1,226 @@
+class GridGraphics {
+    field int xl, xr, yt, yb, boxWidth, boxHeight, numBoxes;
+    field int currX, currY;
+
+    constructor GridGraphics new(int xLeft, int xRight, int yTop, int yBottom, int boxesNum) {
+        let xl = xLeft;
+        let xr = xRight;
+        let yt = yTop;
+        let yb = yBottom;
+        let numBoxes = boxesNum;
+
+        let boxWidth = (xr - xl) / numBoxes;
+        let boxHeight = (yb - yt) / numBoxes;
+
+        let currX = xl;
+        let currY = yt;
+
+        return this;
+    }
+
+    method void dispose() {
+        return;
+    }
+
+    method void drawGrid() {
+        var int i;
+
+        // draw vertical line
+        let i = 0;
+        while (i < 11) {
+            do Screen.drawLine(xl + (i * boxWidth), yt, xl + (i * boxWidth), yb);
+            let i = i + 1;
+        }
+        
+        // draw horizontal lines
+        let i = 0;
+        while (i < 11) {
+            do Screen.drawLine(xl, yt + (i * boxHeight), xr, yt + (i * boxHeight));
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void toggleBold(boolean isOn, boolean isFill) {
+        do Screen.setColor(isOn);
+
+        // top
+        do Screen.drawLine(currX + 1, currY + 1, currX + boxWidth - 1, currY + 1);
+        do Screen.drawLine(currX + 1, currY + 2, currX + boxWidth - 1, currY + 2);
+        
+        // bottom
+        do Screen.drawLine(currX + 1, currY + boxHeight - 1, currX + boxWidth - 1, currY + boxHeight - 1);
+        do Screen.drawLine(currX + 1, currY + boxHeight - 2, currX + boxWidth - 1, currY + boxHeight - 2);
+        
+        // left
+        do Screen.drawLine(currX + 1, currY + 1, currX + 1, currY + boxHeight - 1);
+        do Screen.drawLine(currX + 2, currY + 1, currX + 2, currY + boxHeight - 1);
+        
+        // right
+        do Screen.drawLine(currX + boxWidth - 1, currY + 1, currX + boxWidth - 1, currY + boxHeight - 1);
+        do Screen.drawLine(currX + boxWidth - 2, currY + 1, currX + boxWidth - 2, currY + boxHeight - 1);
+
+        if (~(isOn) & isFill) {
+            do toggleCurrFill(isFill);
+        }
+
+        return;
+    }
+
+    method void move(int key, boolean isFill) {
+        do toggleBold(false, isFill);
+
+        // left
+        if ((key = 130) & ((currX - xl) > 0)) {
+            let currX = currX - boxWidth;
+        }
+        
+        // up
+        if ((key = 131) & ((currY - yt) > 0)) {
+            let currY = currY - boxHeight;
+        }
+
+        // right
+        if ((key = 132) & ((currX + boxWidth) < xr)) {
+            let currX = currX + boxWidth;
+        }
+
+        // down
+        if ((key = 133) & ((currY + boxHeight) < yb)) {
+            let currY = currY + boxHeight;
+        }
+
+        do toggleBold(true, false);
+        return;
+    }
+
+    method void toggleFill(int x, int y, boolean isFill) {
+        var int xPos, yPos;
+        let xPos = xl + (x * boxWidth);
+        let yPos = yt + (y * boxHeight);
+
+        do Screen.setColor(isFill);
+        do Screen.drawRectangle(xPos + 1, yPos + 1, xPos + boxWidth - 1, yPos + boxHeight - 1);
+
+        return;
+    }
+
+    method void toggleCurrFill(boolean isFill) {
+        do toggleFill((currX - xl) / boxWidth, (currY - yt) / boxHeight, isFill);
+       
+        if (~(isFill)) {
+            do toggleBold(true, false);
+        }
+
+        return;
+    }
+
+    method void setCurrPos(int x, int y) {
+        let currX = xl + (x * boxWidth);
+        let currY = yt + (y * boxHeight);
+        
+        return;
+    }
+
+    method void drawCurrHit() {
+        do toggleCurrFill(false);
+        do drawHitPos(currX, currY);
+        return;
+    }
+
+    method void drawHit(int x, int y) {
+        var int xCor, yCor;
+
+        let xCor = xl + (x * boxWidth);
+        let yCor = yt + (y * boxHeight);
+
+        do toggleFill(x, y, false);
+        do drawHitPos(xCor, yCor);
+        return;
+    }
+
+    method void drawHitPos(int x, int y) {
+        do Screen.setColor(true);
+
+        do Screen.drawLine(x + 10, y + 5, x + 10, y + 14);
+        do Screen.drawLine(x + 10, y + 16, x + 10, y + 17);
+        
+        return;
+    }
+
+    method void drawCurrMiss() {
+        do toggleCurrFill(false);
+        do drawMissPos(currX, currY);
+        return;
+    }
+
+    method void drawMiss(int x, int y) {
+        var int xCor, yCor;
+
+        let xCor = xl + (x * boxWidth);
+        let yCor = yt + (y * boxHeight);
+
+        do toggleFill(x, y, false);
+        do drawMissPos(xCor, yCor);
+        return;
+    }
+
+    method void drawMissPos(int x, int y) {
+        do Screen.setColor(true);
+
+        // hori
+        do Screen.drawLine(x + 5, y + 8, x + 17, y + 8);
+        do Screen.drawLine(x + 5, y + 14, x + 17, y + 14);
+
+        // vert
+        do Screen.drawLine(x + 8, y + 5, x + 8, y + 17);
+        do Screen.drawLine(x + 14, y + 5, x + 14, y + 17);
+        
+        return;
+    }
+
+    method void drawSinkShip(Ship ship) {
+        var int x, y, size, i;
+        var booelan isVert;
+
+        let x = ship.getX();
+        let y = ship.getY();
+        let size = ship.getSize();
+        let isVert = ship.getIsVert();
+
+        let i = 0;
+        while (i < size) {
+            if (isVert) {
+                do drawSink(x, y + i);
+            } else {
+                do drawSink(x + i, y);
+            }
+
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void drawSink(int x, int y) {
+        var int xCor, yCor;
+
+        let xCor = xl + (x * boxWidth);
+        let yCor = yt + (y * boxHeight);
+
+        do toggleFill(x, y, false);
+        do drawSinkPos(xCor, yCor);
+        return;
+    }
+
+    method void drawSinkPos(int x, int y) {
+        do Screen.setColor(true);
+
+        do Screen.drawLine(x + 5, y + 5, x + 15, y + 15);
+        do Screen.drawLine(x + 5, y + 15, x + 15, y + 5);
+        
+        return;
+    }
+
+}

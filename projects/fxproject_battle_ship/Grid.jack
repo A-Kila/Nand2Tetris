@@ -1,0 +1,431 @@
+class Grid {
+    field Array grid, guessed, shipsCounts;
+    field int gridSize;
+    field int currX, currY;
+
+    constructor Grid new(int size) {
+        let gridSize = size;
+        let grid = initGrid();
+        let guessed = initGrid();
+        do initShipCounts();
+
+        let currX = 0;
+        let currY = 0;
+
+        return this;
+    }
+
+    method void dispose() {
+        do deleteGrid();
+        do deleteGuessed();
+        do shipsCounts.dispose();
+
+        return;
+    }
+
+    method Array initGrid() {
+        var Array row, matrix;
+        var int i, j;
+
+        let matrix = Array.new(gridSize);
+        
+        let i = 0;
+        while (i < gridSize) {
+            let row = Array.new(gridSize);
+
+            let j = 0;
+            while (j < gridSize) {
+                let row[j] = 0;
+                let j = j + 1;
+            }
+
+            let matrix[i] = row;
+            let i = i + 1;
+        }
+
+        return matrix;
+    }
+
+    method void initShipCounts() {
+        let shipsCounts = Array.new(6);
+        let shipsCounts[1] = 4;
+        let shipsCounts[2] = 3;
+        let shipsCounts[3] = 2;
+        let shipsCounts[4] = 1;
+        let shipsCounts[5] = 1;
+        
+        return;
+    }
+
+    method void deleteGrid() {
+        var Array row;
+        var int i;
+
+        let i = 0;
+        while (i < gridSize) {
+            let row = grid[i];
+            do row.dispose();
+
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void deleteGuessed() {
+        var Array row;
+        var int i;
+
+        let i = 0;
+        while (i < gridSize) {
+            let row = grid[i];
+            do row.dispose();
+
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void move(int key) {
+        // left
+        if (key = 130 & ~(currX = 0)) {
+            let currX = currX - 1;
+        }
+        
+        // up
+        if (key = 131 & ~(currY = 0)) {
+            let currY = currY - 1;
+        }
+
+        // right
+        if (key = 132 & ((currX + 1) < gridSize)) {
+            let currX = currX + 1;
+        }
+
+        // down
+        if (key = 133 & ((currY + 1) < gridSize)) {
+            let currY = currY + 1;
+        }
+
+        return;
+    }
+
+    method boolean isEmpty(int x, int y) {
+        var Array array;
+        let array = grid[y];
+
+        return ~(array[x]);
+    }
+
+    method boolean isCurrEmpty() {
+        return isEmpty(currX, currY);
+    }
+
+    method void toggleFill(int x, int y, boolean isFill) {
+        var Array array;
+
+        let array = grid[y];
+        let array[x] = isFill;
+
+        return;
+    }
+
+    method void toggleCurrFill(boolean isFill) {
+        do toggleFill(currX, currY, isFill);
+        
+        return;
+    }
+
+    method boolean validShips() {
+        var int i, j;
+
+        let i = 0;
+        while (i < gridSize) {
+            let j = 0;
+            while (j < gridSize) {
+                do validateShip(j, i);
+                
+                let j = j + 1;
+            }
+
+            let i = i + 1;
+        }
+
+        return isShipsCorrect();
+    }
+
+    method void validateShip(int x, int y) {
+        var int size;
+        var bool break;
+
+        let break = false;
+        let size = 5;
+        while ((size > 0) & ~(break)) {
+            if (isShip(x, y, size)) {
+                let break = true;
+            } else {
+                let size = size - 1;
+            }
+        }
+
+        let shipsCounts[size] = shipsCounts[size] - 1;
+
+        return;
+    }
+
+    // checks if there is a ship from top/left point
+    method boolean isShip(int x, int y, int size) {
+        var Array array;
+        var boolean result;
+
+        let array = grid[y];
+
+        if (array[x] = 0) {
+            return false;
+        }
+
+        if (checkVertical(x, y, size)) {
+            do putShip(x, y, size, true);
+            return true;
+        }
+
+        if (checkHorizontal(x, y, size)) {
+            do putShip(x, y, size, false);
+            // do Output.printInt(size);
+            return true;
+        }
+
+        return false;
+    }
+
+    method boolean checkHorizontal(int x, int y, int size) {
+        var boolean result;
+        let result = true;
+
+        let result = result & checkValueHorizontal(x, y - 1, size, false);
+        let result = result & checkValueHorizontal(x, y, size, true);
+        let result = result & checkValueHorizontal(x, y + 1, size, false);
+
+        return result;
+    }
+
+    method boolean checkVertical(int x, int y, int size) {
+        var boolean result;
+        let result = true;
+
+        let result = result & checkValueVertical(x - 1, y, size, false);
+        let result = result & checkValueVertical(x, y, size, true);
+        let result = result & checkValueVertical(x + 1, y, size, false);
+
+        return result;
+    }
+
+    method boolean checkValueHorizontal(int x, int y, int size, boolean mustBeShip) {
+        var Array array;
+        var int i;
+        var boolean isShip;
+
+        if ((y < 0) | ~(y < gridSize)) {
+            return ~mustBeShip;
+        }
+
+        if ((x + size) > gridSize) {
+            return false;
+        }
+
+        let array = grid[y];
+
+        // check no before
+        if (x > 0) {
+            if (~(array[x - 1] = 0)) {
+                return false;
+            }
+        }
+
+        let i = 0;
+        while (i < size) {
+            let isShip = ~(array[x + i] = 0);
+
+            if (isShip = ~mustBeShip) {
+                return false;
+            }
+
+            let i = i + 1;
+        }
+
+        // check no after
+        if ((x + i) < gridSize) {
+            return (array[x + i] = 0);
+        }
+
+        return true;
+    }
+
+    method boolean checkValueVertical(int x, int y, int size, boolean mustBeShip) {
+        var Array array;
+        var int i;
+        var boolean isShip;
+
+        if ((x < 0) | ~(x < gridSize)) {
+            return ~mustBeShip;
+        }
+
+        if ((y + size) > gridSize) {
+            return false;
+        }
+
+        // check no before
+        if (y > 0) {
+            let array = grid[y - 1];
+            if (~(array[x] = 0)) {
+                return false;
+            }
+        }
+
+        let i = 0;
+        while (i < size) {
+            let array = grid[y + i];
+
+            let isShip = ~(array[x] = 0);
+            if (isShip = ~mustBeShip) {
+                return false;
+            }
+
+            let i = i + 1;
+        }
+
+        // check no after
+        if ((y + i) < gridSize) {
+            let array = grid[y + i];
+            return (array[x] = 0);
+        }
+        
+        return true;
+    }
+
+    method void putShip(int x, int y, int size, booelan isVert) {
+        var Ship ship;
+        let ship = Ship.new(x, y, size, isVert);
+
+        if (isVert) {
+            do putShipVert(ship);
+        } else {
+            do putShipHori(ship);
+        }
+        
+        return;
+    }
+
+    method void putShipHori(Ship ship) {
+        var int x, y, size, i;
+        var Array row;
+
+        let x = ship.getX();
+        let y = ship.getY();
+        let size = ship.getSize();
+
+        let row = grid[y]; 
+        let i = 0;
+        while (i < size) {
+            let row[x + i] = ship;
+
+            let i = i + 1;
+        }        
+
+        return;
+    }
+
+    method void putShipVert(Ship ship) {
+        var int x, y, size, i;
+        var Array row;
+
+        let x = ship.getX();
+        let y = ship.getY();
+        let size = ship.getSize();
+
+        let i = 0;
+        while (i < size) {
+            let row = grid[y + i];
+            let row[x] = ship;
+
+            let i = i + 1;
+        }        
+
+        return;
+    }
+
+    method boolean isShipsCorrect() {
+        var boolean result;
+        var int i;
+
+        let result = true;
+        let i = 1;
+        while (i < 6) {
+            if (~(shipsCounts[i] = 0)) {
+                let result = false;
+                
+                // break
+                let i = 6;
+            }
+
+            let i = i + 1;
+        }
+
+        do shipsCounts.dispose();
+        do initShipCounts();
+
+        return result;
+    }
+
+    method void setCurrPos(int x, int y) {
+        let currX = x;
+        let currY = y;
+
+        return;
+    }
+
+    method boolean hitCurr() {
+        return hit(currX, currY);
+    }
+
+    method boolean hit(int x, int y) {
+        var Array row, guessedRow;
+        let row = grid[y];
+        
+        let guessedRow = guessed[y];
+        let guessedRow[x] = 1;
+
+        return ~(row[x] = 0);
+    }
+
+    method boolean isCurrGuessed() {
+        return isGuessed(currX, currY);
+    }
+
+    method boolean isGuessed(int x, int y) {
+        var Array row;
+        let row = guessed[y];
+
+        return ~(row[x] = 0);
+    }
+
+    method Ship getCurrShip() {
+        return getShip(currX, currY);
+    }
+
+    method Ship getShip(int x, int y) {
+        var Array row;
+        let row = grid[y];
+
+        return row[x];
+    }
+
+    method boolean isHit(int x, int y) {
+        var Array row;
+
+        let row = grid[y];
+        return ~(row[x] = 0);
+    }
+
+}

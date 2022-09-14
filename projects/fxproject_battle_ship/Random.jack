@@ -1,0 +1,31 @@
+class Random {
+    static int currNum;
+
+    function void init(int seed) {
+        let currNum = seed;
+        return;
+    }
+
+    // Generate pseudo random number using Linear Congruential Generator
+    // Xn+1 = (aXn + c) mod m
+    // parameters are taken from ZX81 but simpler to suit our computer architecture
+    function int getPseudoRandom() {
+        var int m, a, c, div;
+
+        let m = 257; // 2^8 + 1 -> original is 2^16+1
+        let a = 75;
+        let c = 74;
+
+        let currNum = a * currNum + c;
+        
+        // modulo
+        if ((m = 0) | (currNum < m)) {
+            return currNum;
+        }
+
+        let div = currNum / m;
+        let currNum = currNum - (m * div);
+
+        return currNum;
+    }
+}

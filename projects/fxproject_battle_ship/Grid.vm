@@ -1,0 +1,1069 @@
+function Grid.new 0
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 3
+push pointer 0
+call Grid.initGrid 1
+pop this 0
+push pointer 0
+call Grid.initGrid 1
+pop this 1
+push pointer 0
+call Grid.initShipCounts 1
+pop temp 0
+push constant 0
+pop this 4
+push constant 0
+pop this 5
+push pointer 0
+return
+function Grid.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Grid.deleteGrid 1
+pop temp 0
+push pointer 0
+call Grid.deleteGuessed 1
+pop temp 0
+push this 2
+call Array.dispose 1
+pop temp 0
+push constant 0
+return
+function Grid.initGrid 4
+push argument 0
+pop pointer 0
+push this 3
+call Array.new 1
+pop local 1
+push constant 0
+pop local 2
+label WHILE_EXP0
+push local 2
+push this 3
+lt
+not
+if-goto WHILE_END0
+push this 3
+call Array.new 1
+pop local 0
+push constant 0
+pop local 3
+label WHILE_EXP1
+push local 3
+push this 3
+lt
+not
+if-goto WHILE_END1
+push local 3
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 3
+push constant 1
+add
+pop local 3
+goto WHILE_EXP1
+label WHILE_END1
+push local 2
+push local 1
+add
+push local 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP0
+label WHILE_END0
+push local 1
+return
+function Grid.initShipCounts 0
+push argument 0
+pop pointer 0
+push constant 6
+call Array.new 1
+pop this 2
+push constant 1
+push this 2
+add
+push constant 4
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push this 2
+add
+push constant 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push this 2
+add
+push constant 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push this 2
+add
+push constant 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push this 2
+add
+push constant 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function Grid.deleteGrid 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END0
+push local 1
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+call Array.dispose 1
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Grid.deleteGuessed 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END0
+push local 1
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+call Array.dispose 1
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Grid.move 0
+push argument 0
+pop pointer 0
+push argument 1
+push constant 130
+eq
+push this 4
+push constant 0
+eq
+not
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 4
+push constant 1
+sub
+pop this 4
+label IF_FALSE0
+push argument 1
+push constant 131
+eq
+push this 5
+push constant 0
+eq
+not
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 5
+push constant 1
+sub
+pop this 5
+label IF_FALSE1
+push argument 1
+push constant 132
+eq
+push this 4
+push constant 1
+add
+push this 3
+lt
+and
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 4
+push constant 1
+add
+pop this 4
+label IF_FALSE2
+push argument 1
+push constant 133
+eq
+push this 5
+push constant 1
+add
+push this 3
+lt
+and
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 5
+push constant 1
+add
+pop this 5
+label IF_FALSE3
+push constant 0
+return
+function Grid.isEmpty 1
+push argument 0
+pop pointer 0
+push argument 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+not
+return
+function Grid.isCurrEmpty 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 4
+push this 5
+call Grid.isEmpty 3
+return
+function Grid.toggleFill 1
+push argument 0
+pop pointer 0
+push argument 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+push argument 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function Grid.toggleCurrFill 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 4
+push this 5
+push argument 1
+call Grid.toggleFill 4
+pop temp 0
+push constant 0
+return
+function Grid.validShips 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 3
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END1
+push pointer 0
+push local 1
+push local 0
+call Grid.validateShip 3
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push pointer 0
+call Grid.isShipsCorrect 1
+return
+function Grid.validateShip 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+push constant 5
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 0
+gt
+push local 1
+not
+and
+not
+if-goto WHILE_END0
+push pointer 0
+push argument 1
+push argument 2
+push local 0
+call Grid.isShip 4
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+pop local 1
+goto IF_END0
+label IF_FALSE0
+push local 0
+push constant 1
+sub
+pop local 0
+label IF_END0
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+push this 2
+add
+push local 0
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 1
+sub
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function Grid.isShip 2
+push argument 0
+pop pointer 0
+push argument 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+push argument 1
+push argument 2
+push argument 3
+call Grid.checkVertical 4
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+push argument 1
+push argument 2
+push argument 3
+push constant 0
+not
+call Grid.putShip 5
+pop temp 0
+push constant 0
+not
+return
+label IF_FALSE1
+push pointer 0
+push argument 1
+push argument 2
+push argument 3
+call Grid.checkHorizontal 4
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push argument 1
+push argument 2
+push argument 3
+push constant 0
+call Grid.putShip 5
+pop temp 0
+push constant 0
+not
+return
+label IF_FALSE2
+push constant 0
+return
+function Grid.checkHorizontal 1
+push argument 0
+pop pointer 0
+push constant 0
+not
+pop local 0
+push local 0
+push pointer 0
+push argument 1
+push argument 2
+push constant 1
+sub
+push argument 3
+push constant 0
+call Grid.checkValueHorizontal 5
+and
+pop local 0
+push local 0
+push pointer 0
+push argument 1
+push argument 2
+push argument 3
+push constant 0
+not
+call Grid.checkValueHorizontal 5
+and
+pop local 0
+push local 0
+push pointer 0
+push argument 1
+push argument 2
+push constant 1
+add
+push argument 3
+push constant 0
+call Grid.checkValueHorizontal 5
+and
+pop local 0
+push local 0
+return
+function Grid.checkVertical 1
+push argument 0
+pop pointer 0
+push constant 0
+not
+pop local 0
+push local 0
+push pointer 0
+push argument 1
+push constant 1
+sub
+push argument 2
+push argument 3
+push constant 0
+call Grid.checkValueVertical 5
+and
+pop local 0
+push local 0
+push pointer 0
+push argument 1
+push argument 2
+push argument 3
+push constant 0
+not
+call Grid.checkValueVertical 5
+and
+pop local 0
+push local 0
+push pointer 0
+push argument 1
+push constant 1
+add
+push argument 2
+push argument 3
+push constant 0
+call Grid.checkValueVertical 5
+and
+pop local 0
+push local 0
+return
+function Grid.checkValueHorizontal 3
+push argument 0
+pop pointer 0
+push argument 2
+push constant 0
+lt
+push argument 2
+push this 3
+lt
+not
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 4
+not
+return
+label IF_FALSE0
+push argument 1
+push argument 3
+add
+push this 3
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+push argument 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push constant 0
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 1
+push constant 1
+sub
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+return
+label IF_FALSE3
+label IF_FALSE2
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push argument 3
+lt
+not
+if-goto WHILE_END0
+push argument 1
+push local 1
+add
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+pop local 2
+push local 2
+push argument 4
+not
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 0
+return
+label IF_FALSE4
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push argument 1
+push local 1
+add
+push this 3
+lt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push argument 1
+push local 1
+add
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+return
+label IF_FALSE5
+push constant 0
+not
+return
+function Grid.checkValueVertical 3
+push argument 0
+pop pointer 0
+push argument 1
+push constant 0
+lt
+push argument 1
+push this 3
+lt
+not
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 4
+not
+return
+label IF_FALSE0
+push argument 2
+push argument 3
+add
+push this 3
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+push argument 2
+push constant 0
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 2
+push constant 1
+sub
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+return
+label IF_FALSE3
+label IF_FALSE2
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push argument 3
+lt
+not
+if-goto WHILE_END0
+push argument 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+pop local 2
+push local 2
+push argument 4
+not
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 0
+return
+label IF_FALSE4
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push argument 2
+push local 1
+add
+push this 3
+lt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push argument 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+return
+label IF_FALSE5
+push constant 0
+not
+return
+function Grid.putShip 1
+push argument 0
+pop pointer 0
+push argument 1
+push argument 2
+push argument 3
+push argument 4
+call Ship.new 4
+pop local 0
+push argument 4
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push local 0
+call Grid.putShipVert 2
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push pointer 0
+push local 0
+call Grid.putShipHori 2
+pop temp 0
+label IF_END0
+push constant 0
+return
+function Grid.putShipHori 5
+push argument 0
+pop pointer 0
+push argument 1
+call Ship.getX 1
+pop local 0
+push argument 1
+call Ship.getY 1
+pop local 1
+push argument 1
+call Ship.getSize 1
+pop local 2
+push local 1
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 4
+push constant 0
+pop local 3
+label WHILE_EXP0
+push local 3
+push local 2
+lt
+not
+if-goto WHILE_END0
+push local 0
+push local 3
+add
+push local 4
+add
+push argument 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 3
+push constant 1
+add
+pop local 3
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Grid.putShipVert 5
+push argument 0
+pop pointer 0
+push argument 1
+call Ship.getX 1
+pop local 0
+push argument 1
+call Ship.getY 1
+pop local 1
+push argument 1
+call Ship.getSize 1
+pop local 2
+push constant 0
+pop local 3
+label WHILE_EXP0
+push local 3
+push local 2
+lt
+not
+if-goto WHILE_END0
+push local 1
+push local 3
+add
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 4
+push local 0
+push local 4
+add
+push argument 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 3
+push constant 1
+add
+pop local 3
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Grid.isShipsCorrect 2
+push argument 0
+pop pointer 0
+push constant 0
+not
+pop local 0
+push constant 1
+pop local 1
+label WHILE_EXP0
+push local 1
+push constant 6
+lt
+not
+if-goto WHILE_END0
+push local 1
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop local 0
+push constant 6
+pop local 1
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push this 2
+call Array.dispose 1
+pop temp 0
+push pointer 0
+call Grid.initShipCounts 1
+pop temp 0
+push local 0
+return
+function Grid.setCurrPos 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 4
+push argument 2
+pop this 5
+push constant 0
+return
+function Grid.hitCurr 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 4
+push this 5
+call Grid.hit 3
+return
+function Grid.hit 2
+push argument 0
+pop pointer 0
+push argument 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 2
+push this 1
+add
+pop pointer 1
+push that 0
+pop local 1
+push argument 1
+push local 1
+add
+push constant 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+return
+function Grid.isCurrGuessed 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 4
+push this 5
+call Grid.isGuessed 3
+return
+function Grid.isGuessed 1
+push argument 0
+pop pointer 0
+push argument 2
+push this 1
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+return
+function Grid.getCurrShip 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 4
+push this 5
+call Grid.getShip 3
+return
+function Grid.getShip 1
+push argument 0
+pop pointer 0
+push argument 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+return
+function Grid.isHit 1
+push argument 0
+pop pointer 0
+push argument 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+return

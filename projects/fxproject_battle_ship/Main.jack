@@ -1,0 +1,19 @@
+class Main {
+    
+    function void main() {
+        var Match match;
+        var boolean playerWon;
+
+        while (true) {
+            let match = Match.new();
+            let playerWon = match.play();
+            do match.dispose();
+            
+            do ResultLogger.logResult(playerWon);
+            do ResultLogger.waitForRestart();
+        }
+
+        return;
+    }
+
+}

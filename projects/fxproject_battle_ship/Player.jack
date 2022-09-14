@@ -1,0 +1,223 @@
+class Player {
+    field GridGraphics graphics;
+    field Grid grid;
+    field int numShipsLeft;
+
+    constructor Player new(int xLeft, int xRight, int yTop, int yBottom) {
+        let graphics = GridGraphics.new(xLeft, xRight, yTop, yBottom, 10);
+        let grid = Grid.new(10);
+        let numShipsLeft = 11;
+
+        return this;
+    }
+
+    method void dispose() {
+        do graphics.dispose();
+        do grid.dispose();
+
+        return;
+    }
+
+    method void drawGrid(boolean drawBold) {
+        var int key;
+
+        do graphics.drawGrid();
+        do graphics.toggleBold(drawBold, false);
+
+        return;
+    }
+
+    method void putShips() {
+        var boolean isPutting, isFill, isShipsValid;
+        var int key;
+
+        let key = Keyboard.keyPressed();
+
+        let isPutting = true;
+        while (isPutting) {
+            // key up
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+            }
+
+            // key down
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+            }
+
+            // arrow
+            if (key > 129 & key < 134) {
+                let isFill = ~(grid.isCurrEmpty());
+
+                do move(key, isFill);                
+            }
+
+            // enter
+            if (key = 128) {
+                let isFill = grid.isCurrEmpty();
+
+                do graphics.toggleCurrFill(isFill);
+                do grid.toggleCurrFill(isFill);
+            }
+
+            // s (valid)
+            if (key = 83) {
+                let isShipsValid = grid.validShips();
+
+                do graphics.toggleBold(false, false);
+
+                if (isShipsValid) {
+                    let isPutting = false;
+                } else {
+                    do reset();
+                }
+            }
+        }
+
+        return;
+    }
+
+    method void move(int key, boolean isFill) {
+        do graphics.move(key, isFill);
+        do grid.move(key);
+
+        return;
+    }
+
+    method void reset() {
+        var int i, j;
+
+        let i = 0;
+        while (i < 10) {
+            let j = 0;
+            while (j < 10) {
+                if (~(grid.isEmpty(j, i))) {
+                    do graphics.toggleFill(j, i, false);
+                }
+                let j = j + 1;
+            }
+
+            let i = i + 1;
+        }
+
+        do grid.dispose();
+        let grid = Grid.new(10);
+
+        do graphics.setCurrPos(0, 0);
+        do graphics.toggleBold(true, false);
+
+        return;
+    }
+
+    method Grid getGrid() {
+        return grid;
+    }
+
+    method GridGraphics getGraphics() {
+        return graphics;
+    }
+
+    method void toggleBold(boolean isBold) {
+        do graphics.toggleBold(isBold, false);
+
+        return;
+    }
+
+    method boolean userShoot(Player other) {
+        var int key;
+        var boolean isShooting, isHit, is;
+        var Grid otherGrid;
+
+        let isShooting = true;
+        while (isShooting) {
+            // key up
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+            }
+
+            // key down
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+            }
+
+            // arrow
+            if (key > 129 & key < 134) {
+                do other.move(key, false);
+            }
+
+            // enter
+            if (key = 128) {
+                let isHit = other.shootAtCurr();
+                let isShooting = false;
+            }
+        }
+
+        return isHit;
+    }
+
+
+    method int shootAt(int x, int y) {
+        var Ship hitShip;
+
+        if (grid.isGuessed(x, y)) {
+            return 3;
+        }
+
+        if (grid.hit(x, y)) {
+            do graphics.drawHit(x, y);
+            let hitShip = grid.getShip(x, y);
+
+            if (hitShip.hit()) {
+                let numShipsLeft = numShipsLeft - 1;
+                do graphics.drawSinkShip(hitShip);
+
+                return 2;
+            }          
+
+            return 1;
+        } 
+
+        do graphics.drawMiss(x, y);
+
+        return 0;
+    }
+
+    method boolean shootAtCurr() {
+        var Ship hitShip;
+
+        if (grid.isCurrGuessed()) {
+            return true; // so that player still has a try
+        }
+
+        if (grid.hitCurr()) {
+            do graphics.drawCurrHit();
+            let hitShip = grid.getCurrShip();
+
+            if (hitShip.hit()) {
+                let numShipsLeft = numShipsLeft - 1;
+                do graphics.drawSinkShip(hitShip);
+            }          
+
+            return true;
+        } 
+
+        do graphics.drawCurrMiss();
+
+        return false;
+    }
+
+    method booleans isLost() {
+        return (numShipsLeft = 0);
+    }
+
+    method int getSeedFromGrid() {
+        var int result;
+
+        let result = -1 * grid.isHit(3, 3) * 2 * 2 * 2 * 2;
+        let result = result + (-1 * grid.isHit(9, 7) * 2 * 2);
+        let result = result + (-1 * grid.isHit(0, 5));
+
+        return result;
+    }
+
+}

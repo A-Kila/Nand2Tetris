@@ -1,0 +1,41 @@
+class Ship {
+    field int xl, yt, size, livesLeft;
+    field boolaen isVert;
+
+    constructor Ship new(int xLeft, int yTop, int shipSize, boolean isVertical) {
+        let xl = xLeft;
+        let yt = yTop;
+        let size = shipSize;
+        let livesLeft = size;
+        let isVert = isVertical;
+
+        return this;
+    }
+
+    method void dispose() {
+        return;
+    }
+
+    method int getX() {
+        return xl;
+    }
+
+    method int getY() {
+        return yt;
+    }
+
+    method int getSize() {
+        return size;
+    }
+
+    method boolean getIsVert() {
+        return isVert;
+    }
+
+    method boolean hit() {
+        let livesLeft = livesLeft - 1;
+         
+        return livesLeft = 0;
+    }
+
+}

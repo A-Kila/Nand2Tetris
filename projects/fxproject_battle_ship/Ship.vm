@@ -1,0 +1,52 @@
+function Ship.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push this 2
+pop this 3
+push argument 3
+pop this 4
+push pointer 0
+return
+function Ship.dispose 0
+push argument 0
+pop pointer 0
+push constant 0
+return
+function Ship.getX 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Ship.getY 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Ship.getSize 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Ship.getIsVert 0
+push argument 0
+pop pointer 0
+push this 4
+return
+function Ship.hit 0
+push argument 0
+pop pointer 0
+push this 3
+push constant 1
+sub
+pop this 3
+push this 3
+push constant 0
+eq
+return
